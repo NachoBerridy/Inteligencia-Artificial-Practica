@@ -1,4 +1,3 @@
-from ast import For, If
 import numpy as np
 from box import Box
 
@@ -71,6 +70,7 @@ class Layout: #disposicion
                         self.mat[i,j] = Box(i,j,True)
 
 
+"""
 objeto = Layout (3,4,1,4,60)
 
 objeto.fill_mat()
@@ -84,3 +84,4 @@ for j in range (objeto.columns):
 
 for line in matriz_prueba:
     print ('  '.join(map(str, line)))
+"""

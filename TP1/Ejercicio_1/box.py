@@ -1,14 +1,12 @@
+from re import X
+
+
 class Box:
 
-    def __init__(self,x:int,y:int,rack:bool):
-        self.x = x
-        self.y = y
+    def __init__(self,rack:bool):
         self.is_rack = rack
         self.h:float #Heuristica
-        self.g:float #Costo
+        self.g=0 #Costo
+        self.f:float #costoTotal
+        self.root=(0,0)
     
-    def heuristic(self):
-        pass
-
-    def cost(self):
-        pass

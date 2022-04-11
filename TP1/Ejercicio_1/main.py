@@ -77,4 +77,4 @@ while True:
         y = y+tamaño_cuadro+1
         x = 0    
     pygame.display.flip()
-    clock.tick(1)
+    #clock.tick(1)

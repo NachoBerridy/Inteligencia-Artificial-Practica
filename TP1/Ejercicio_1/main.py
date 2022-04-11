@@ -10,20 +10,20 @@ from path import*
 cuadro = Layout(6,5,1,6,6)
 cuadro.fill_mat()
 path1=Path(cuadro)
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (50, 50, 50)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
+
 pygame.init()
 size = (720,720)
+
 if cuadro.racks_order == 0:
     tamaño_cuadro = int((720-cuadro.rows)/cuadro.rows) 
 else:
     tamaño_cuadro = int((720-cuadro.columns)/cuadro.columns)
-filas=1
-columnas=6
-#size = (tamaño_cuadro*cuadro.columns+100, tamaño_cuadro*cuadro.rows)
 
 
 screen = pygame.display.set_mode(size)
@@ -34,13 +34,14 @@ contador = 0
 def mouse_pressed(contador):
     mouseX = int(pygame.mouse.get_pos()[0])
     mouseY = int(pygame.mouse.get_pos()[1])
+    
     if contador ==0 and cuadro.mat[int(mouseY/(tamaño_cuadro+1)), int(mouseX/(tamaño_cuadro+1))].is_rack != False:
         cuadro.mat[int(mouseY/(tamaño_cuadro+1)), int(mouseX/(tamaño_cuadro+1))].is_starting_point = True
         contador = 1
     elif contador == 1 and cuadro.mat[int(mouseY/(tamaño_cuadro+1)), int(mouseX/(tamaño_cuadro+1))].is_rack != False: 
         cuadro.mat[int(mouseY/(tamaño_cuadro+1)), int(mouseX/(tamaño_cuadro+1))].is_target = True
         contador = 0
-    return (contador,(int(mouseX/(tamaño_cuadro+1)), int(mouseY/(tamaño_cuadro+1))))
+    return (contador,(int(mouseY/(tamaño_cuadro+1)), int(mouseX/(tamaño_cuadro+1))))
 
 
 
@@ -51,12 +52,14 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
         if event.type==pygame.MOUSEBUTTONDOWN:
-            contador=mouse_pressed(contador)[0]
-            print (contador)
-            if contador==1:
-                path1.starting_point=mouse_pressed(contador)[1]
-            elif contador==0:
-                path1.target=mouse_pressed(contador)[1]
+            c,p=mouse_pressed(contador)
+            contador=c
+            print (c)
+            print (p)
+            if c==1:
+                path1.starting_point=p
+            elif c==0:
+                path1.target=p
                 sequence=path1.a_star()
                 print(sequence)
                 

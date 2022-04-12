@@ -6,6 +6,7 @@ from path import*
 
 class Gui:
     def __init__(self):
+        self.path1:Path
         self.root = Tk()
         self.frm = ttk.Frame(self.root,padding=10)
         self.frm.grid()
@@ -39,8 +40,10 @@ class Gui:
     def do_bloquear(self):
         if (self.op.get()=="horizontal"):
             self.col.configure(state='normal')
+            self.rows.configure(state='disable')
         else:
             self.rows.configure(state='normal')
+            self.col.configure(state='disable')
 
     def do_funcion(self):
         if(self.op.get()=="horizontal"):
@@ -48,9 +51,7 @@ class Gui:
         else:
             grid=Layout(int(self.c_rows.get()),int(self.c_col.get()),0,2,int(self.rows.get()))
         grid.fill_mat()
-        path1=Path(grid)
+        self.path1=Path(grid)
+        self.root.destroy()
 
-        
-if __name__=="__main__":
-    gui1=Gui()
-    gui1.root.mainloop() 
+ 

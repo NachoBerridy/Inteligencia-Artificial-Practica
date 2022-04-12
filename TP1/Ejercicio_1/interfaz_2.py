@@ -25,9 +25,9 @@ def main_loop(path1):
     size = (720,720)
 
     if path1.storage.racks_order == 0:
-        tamaño_cuadro = int((720-path1.storage.rows)/path1.storage.rows) 
+        tamaño_cuadro = int((720-(path1.storage.rows))/(path1.storage.rows+1)) 
     else:
-        tamaño_cuadro = int((720-path1.storage.columns)/path1.storage.columns)
+        tamaño_cuadro = int((720-(path1.storage.columns))/(path1.storage.columns+1))
     
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Grupo 6 - A* (Ejercicio 1)")

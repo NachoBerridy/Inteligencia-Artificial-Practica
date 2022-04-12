@@ -33,16 +33,16 @@ class Layout: #disposicion
 
                     if (2<=j<=self.columns-3 and 2<=i<=self.rows-3 ):
                         if (counter<self.racks_rows):
-                            self.mat[i,j] = Box(i,j,False)
+                            self.mat[i,j] = Box(i,j,False, (0, 0, 0))
                             counter=counter+1
                         elif  (self.racks_rows<=counter<self.racks_rows+2):
-                            self.mat[i,j] = Box(i,j,True)
+                            self.mat[i,j] = Box(i,j,True, (255, 255, 255))
                             counter=counter+1
                         
                         if self.mat[i,j-2].is_rack==False:
-                            self.mat[i,j] = Box(i,j,True)
+                            self.mat[i,j] = Box(i,j,True, (255, 255, 255))
                     else:
-                        self.mat[i,j] = Box(i,j,True)
+                        self.mat[i,j] = Box(i,j,True, (255, 255, 255))
 
         else:
             self.columns = self.racks_by_row*(self.racks_columns+2)+2
@@ -58,16 +58,16 @@ class Layout: #disposicion
 
                     if (2<=j<=self.columns-3 and 2<=i<=self.rows-3 ):
                         if (counter<self.racks_columns):
-                            self.mat[i,j] = Box(i,j,False)
+                            self.mat[i,j] = Box(i,j,False, (0, 0, 0))
                             counter=counter+1
                         elif  (self.racks_columns<=counter<self.racks_columns+2):
-                            self.mat[i,j] = Box(i,j,True)
+                            self.mat[i,j] = Box(i,j,True, (255, 255, 255))
                             counter=counter+1
                         
                         if self.mat[i-2,j].is_rack==False:
-                            self.mat[i,j] = Box(i,j,True)
+                            self.mat[i,j] = Box(i,j,True, (255, 255, 255))
                     else:
-                        self.mat[i,j] = Box(i,j,True)
+                        self.mat[i,j] = Box(i,j,True, (255, 255, 255))
 
 
 """

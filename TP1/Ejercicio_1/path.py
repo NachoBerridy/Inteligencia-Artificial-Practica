@@ -1,16 +1,16 @@
 from math import sqrt
-from msilib import sequence
 from layout import Layout
 class Path:
 
     def __init__(self,layout:Layout):
-        #self.box_list
-        #self.total_cost:int
+
+        self.total_cost:int
         self.storage=layout
         self.target=(0,0)
         self.starting_point=(0,0)
 
     def a_star(self): 
+
         open_nodes =[]
         closed_nodes=[]
         neighbours=[]
@@ -18,6 +18,7 @@ class Path:
         closed_nodes.append(self.starting_point)
         x=self.starting_point[1]
         y=self.starting_point[0]
+
         while (y,x)!=self.target: ##nodo objetivo
             
             root1 = (y,x) #nodo raiz
@@ -54,32 +55,21 @@ class Path:
                 elif n in closed_nodes:
                     neighbours.remove(n)
             
-            #print(neighbours)
             for i in neighbours[::1]:
-                """
-                if self.storage.mat[i].is_rack == False:
-                    neighbours.remove(i)
-                    #print("Era barrera")
                     
-                elif i in closed_nodes:
-                    neighbours.remove(i)
-                """
-                    #print("Estaba en nodos cerrados")
                 if i in open_nodes:
-                    #print("Ya estaba guardado")
                     if self.storage.mat[i].g>(self.storage.mat[y,x].g+1): 
                         self.storage.mat[i].root=root1
                         self.storage.mat[i].g=self.storage.mat[y,x].g+1
                         self.storage.mat[i].f=self.storage.mat[i].h+self.storage.mat[i].g
                 else:
-                    #print("Nuevo!")
                     open_nodes.append(i)
+                    #self.storage.mat[i].set_color((0, 244, 220))
                     self.storage.mat[i].root=root1
                     self.storage.mat[i].h=round(sqrt(((self.target[0]-i[0])**2)+((self.target[1]-i[1])**2)))
                     self.storage.mat[i].g=self.storage.mat[y,x].g+1
                     self.storage.mat[i].f=self.storage.mat[i].h+self.storage.mat[i].g
 
-            #print (open_nodes)
             (y,x)=open_nodes[0]
 
             for i in open_nodes:
@@ -88,15 +78,15 @@ class Path:
 
             open_nodes.remove((y,x))
             closed_nodes.append((y,x))
-            #print(y,x)
+            #self.storage.mat[y,x].set_color((65, 155, 233))
             
-            
+        self.total_cost = self.storage.mat[self.target].f 
+
         while self.target != self.starting_point:
             sequence.append(self.target)
             self.target=self.storage.mat[self.target].root
-            #print(sequence)
+            self.storage.mat[self.target].set_color((244, 216, 16))
             ordered_sequence=list(reversed(sequence))
-        
         return ordered_sequence
 
 

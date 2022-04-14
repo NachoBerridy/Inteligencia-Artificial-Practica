@@ -52,6 +52,7 @@ def main_loop(path1):
         screen.fill((148, 148, 148))
         (x,y) = (0,1)
 
+        
         for i in range(path1.storage.rows):
             for j in range(path1.storage.columns):
                 if path1.storage.mat[i,j].is_rack == True:

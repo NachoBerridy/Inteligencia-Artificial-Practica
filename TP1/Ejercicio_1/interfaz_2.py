@@ -52,8 +52,13 @@ def main_loop(path1):
         screen.fill((148, 148, 148))
         (x,y) = (0,1)
 
+<<<<<<< HEAD
         for i in range(path1.storage.rows-1):
             for j in range(path1.storage.columns-1):
+=======
+        for i in range(path1.storage.rows):
+            for j in range(path1.storage.columns):
+>>>>>>> 72e7d2c3f89ba68ab926cbc5e3519f188ae0d3da
                 if path1.storage.mat[i,j].is_rack == True:
                     rect(screen, path1.storage.mat[i,j].color, [x, y,tamaño_cuadro, tamaño_cuadro])
                 elif path1.storage.mat[i,j].is_rack == False:

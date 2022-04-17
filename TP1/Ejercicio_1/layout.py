@@ -68,6 +68,14 @@ class Layout: #disposicion
                             self.mat[i,j] = Box(i,j,True, (255, 255, 255))
                     else:
                         self.mat[i,j] = Box(i,j,True, (255, 255, 255))
+        
+        for i in range (self.rows):
+            if(i%5==0 and i!=0):
+                self.mat[i,0].is_cargo_bay = True
+                self.mat[i,0].set_color((157, 157, 157 ))
+
+
+
 
 
 """

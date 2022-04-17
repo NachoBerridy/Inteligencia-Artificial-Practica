@@ -10,6 +10,7 @@ class Box:
         self.is_rack = rack
         self.is_target = False
         self.is_starting_point = False
+        self.is_cargo_bay = False
         self.h=0.0 #Heuristica
         self.g=0 #Costo
         self.f=0.0 #costoTotal

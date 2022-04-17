@@ -1,5 +1,6 @@
 from math import sqrt
 from layout import Layout
+
 class Path:
 
     def __init__(self,layout:Layout):

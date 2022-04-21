@@ -6,16 +6,40 @@ def mouse_pressed(contador, path1, tamaño_cuadro):
     mouseX = int((pygame.mouse.get_pos()[0])/(tamaño_cuadro+1))
     mouseY = int((pygame.mouse.get_pos()[1])/(tamaño_cuadro+1))
     
-    if contador ==0 and path1.storage.mat[int(mouseY), int(mouseX)].is_rack != False:
-
-        path1.storage.mat[mouseY, mouseX].is_starting_point = True
-        path1.storage.mat[mouseY,mouseX].set_color()
-
+    if contador ==0:
+        if path1.storage.mat[mouseY, mouseX].is_rack == True:
+        
+            path1.storage.mat[mouseY, mouseX].is_starting_point = True
+            path1.storage.mat[mouseY,mouseX].set_color()
+        
+        elif path1.storage.mat[mouseY, mouseX].is_rack == False:
+        
+            x = path1.storage.mat[mouseY, mouseX].a_x 
+            y = path1.storage.mat[mouseY, mouseX].a_y
+            path1.storage.mat[mouseY, mouseX].set_color((244, 16, 202))
+            path1.storage.mat[mouseY, mouseX].is_starting_point = True
+            mouseX = x
+            mouseY = y
         contador = 1
-    elif contador == 1 and path1.storage.mat[int(mouseY), int(mouseX)].is_rack != False: 
-        path1.storage.mat[mouseY,mouseX].is_target = True
-        path1.storage.mat[mouseY,mouseX].set_color()
-        contador = 0
+    elif contador == 1:
+
+        if path1.storage.mat[mouseY, mouseX].is_rack == True:
+
+            path1.storage.mat[mouseY,mouseX].is_target = True
+            path1.storage.mat[mouseY,mouseX].set_color()
+            
+        elif path1.storage.mat[mouseY, mouseX].is_rack == False:
+
+            x = path1.storage.mat[mouseY, mouseX].a_x 
+            y = path1.storage.mat[mouseY, mouseX].a_y
+            path1.storage.mat[mouseY, mouseX].set_color((152, 244, 16))
+            path1.storage.mat[mouseY, mouseX].is_target = True
+            mouseX = x
+            mouseY = y
+            
+            
+        contador =0
+              
     return (contador,(int(mouseY), int(mouseX)))
 
 
@@ -53,7 +77,10 @@ def main_loop(path1):
                                 path1.storage.mat[i[0],i[1]].is_target = False
                             if path1.storage.mat[i[0],i[1]].is_starting_point == True:
                                 path1.storage.mat[i[0],i[1]].is_starting_point = False
-                            path1.storage.mat[i[0],i[1]].set_color((255,255,255))
+                            if path1.storage.mat[i[0],i[1]].is_rack == True:
+                                path1.storage.mat[i[0],i[1]].set_color((255,255,255))
+                            else:
+                                path1.storage.mat[i[0],i[1]].set_color((0, 0, 0))
                     except:
                         pass
                     path1.starting_point=p
@@ -67,20 +94,7 @@ def main_loop(path1):
         fuente = pygame.font.Font(None, 20)
         for i in range(path1.storage.rows):
             for j in range(path1.storage.columns):
-                if path1.storage.mat[i,j].is_rack == True:
-                    rect(screen, path1.storage.mat[i,j].color, [x, y,tamaño_cuadro, tamaño_cuadro])
-                    
-                elif path1.storage.mat[i,j].is_rack == False:
-                    rect(screen, path1.storage.mat[i,j].color, [x, y, tamaño_cuadro, tamaño_cuadro])
-                    #text = "1"
-                    #mensaje = fuente.render(text, 1, (255, 255, 255))
-                    #screen.blit(mensaje, (x, y))
-                if path1.storage.mat[i,j].is_target == True:
-                    rect(screen, path1.storage.mat[i,j].color, [x, y, tamaño_cuadro, tamaño_cuadro])
-                if path1.storage.mat[i,j].is_starting_point == True:
-                    rect(screen, path1.storage.mat[i,j].color, [x, y, tamaño_cuadro, tamaño_cuadro])
-                if path1.storage.mat[i,j].is_cargo_bay == True:
-                    rect(screen, path1.storage.mat[i,j].color, [x, y, tamaño_cuadro, tamaño_cuadro])
+                rect(screen, path1.storage.mat[i,j].color, [x, y,tamaño_cuadro, tamaño_cuadro])
                 x = x+tamaño_cuadro+1
             y = y+tamaño_cuadro+1
             x = 0    

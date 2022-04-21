@@ -65,7 +65,6 @@ class Path:
                         self.storage.mat[i].f=self.storage.mat[i].h+self.storage.mat[i].g
                 else:
                     open_nodes.append(i)
-                    #self.storage.mat[i].set_color((0, 244, 220))
                     self.storage.mat[i].root=root1
                     self.storage.mat[i].h=round(sqrt(((self.target[0]-i[0])**2)+((self.target[1]-i[1])**2)))
                     self.storage.mat[i].g=self.storage.mat[y,x].g+1
@@ -79,28 +78,23 @@ class Path:
 
             open_nodes.remove((y,x))
             closed_nodes.append((y,x))
-            #self.storage.mat[y,x].set_color((65, 155, 233))
             
         self.total_cost = self.storage.mat[self.target].f 
 
         while self.target != self.starting_point:
             sequence.append(self.target)
             self.target=self.storage.mat[self.target].root
-            self.storage.mat[self.target].set_color((244, 216, 16))
         sequence.append(self.target)
+
+        for i in sequence:
+             self.storage.mat[i[0],i[1]].set_color((244, 216, 16))
         ordered_sequence=list(reversed(sequence))
+
+        for  i in range(self.storage.rows):
+            for  j in range(self.storage.columns):
+                if self.storage.mat[i,j].is_target == True:
+                    ordered_sequence.append((i, j))
+                if self.storage.mat[i,j].is_starting_point == True:
+                    ordered_sequence.insert(0,(i, j))
+
         return ordered_sequence
-
-
-"""
-layout_1 = Layout (6,5,1,6,6)
-layout_1.fill_mat()
-path1=Path(layout_1)
-#print (path1.storage.columns)
-#print (path1.storage.rows)
-##path1.storage.mat[rows][columns]) asi lo lee
-path1.starting_point = (13, 15)
-path1.target = (9, 23) 
-
-print(path1.a_star())
-"""

@@ -26,9 +26,10 @@ def main_loop(path1):
 
     if path1.storage.racks_order == 0:
         tamaño_cuadro = int((720-(path1.storage.rows))/(path1.storage.rows+1)) 
+        size = ((tamaño_cuadro+1)*path1.storage.rows,(tamaño_cuadro+1)*path1.storage.columns)
     else:
         tamaño_cuadro = int((720-(path1.storage.columns))/(path1.storage.columns+1))
-    
+        size = ((tamaño_cuadro+1)*path1.storage.rows,(tamaño_cuadro+1)*path1.storage.columns)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Grupo 6 - A* (Ejercicio 1)")
     clock = pygame.time.Clock()

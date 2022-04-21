@@ -26,11 +26,10 @@ def main_loop(path1):
 
     if path1.storage.racks_order == 0:
         tamaño_cuadro = int((720-(path1.storage.rows))/(path1.storage.rows+1)) 
-        size = ((tamaño_cuadro+1)*path1.storage.columns,(tamaño_cuadro+1)*path1.storage.rows)
+        size = ((tamaño_cuadro+1)*path1.storage.rows,(tamaño_cuadro+1)*path1.storage.columns)
     else:
         tamaño_cuadro = int((720-(path1.storage.columns))/(path1.storage.columns+1))
-        size = ((tamaño_cuadro+1)*path1.storage.columns,(tamaño_cuadro+1)*path1.storage.rows)
-    
+        size = ((tamaño_cuadro+1)*path1.storage.rows,(tamaño_cuadro+1)*path1.storage.columns)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Grupo 6 - A* (Ejercicio 1)")
     clock = pygame.time.Clock()
@@ -53,17 +52,13 @@ def main_loop(path1):
                     
         screen.fill((148, 148, 148))
         (x,y) = (0,1)
-        fuente = pygame.font.Font(None, 20)
+
         for i in range(path1.storage.rows):
             for j in range(path1.storage.columns):
                 if path1.storage.mat[i,j].is_rack == True:
                     rect(screen, path1.storage.mat[i,j].color, [x, y,tamaño_cuadro, tamaño_cuadro])
-                    
                 elif path1.storage.mat[i,j].is_rack == False:
                     rect(screen, path1.storage.mat[i,j].color, [x, y, tamaño_cuadro, tamaño_cuadro])
-                    #text = "1"
-                    #mensaje = fuente.render(text, 1, (255, 255, 255))
-                    #screen.blit(mensaje, (x, y))
                 if path1.storage.mat[i,j].is_target == True:
                     rect(screen, path1.storage.mat[i,j].color, [x, y, tamaño_cuadro, tamaño_cuadro])
                 if path1.storage.mat[i,j].is_starting_point == True:

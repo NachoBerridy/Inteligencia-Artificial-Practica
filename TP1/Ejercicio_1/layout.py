@@ -1,6 +1,6 @@
 import numpy as np
 from box import Box
-
+from rack import Rack
 class Layout: #disposicion    
     
     def __init__(self,racks_by_columns:int,racks_by_row:int,racks_order:int,racks_columns = 2,racks_rows = 2):
@@ -19,7 +19,7 @@ class Layout: #disposicion
 
     def fill_mat(self):
 
-        if(self.racks_order == 0):
+        if(self.racks_order == 0): #Vertical
             self.columns = self.racks_by_row*4 + 2
             self.rows = self.racks_by_columns*(self.racks_rows+2) + 2
             self.mat = np.zeros((self.rows,self.columns),Box)
@@ -33,7 +33,10 @@ class Layout: #disposicion
 
                     if (2<=j<=self.columns-3 and 2<=i<=self.rows-3 ):
                         if (counter<self.racks_rows):
-                            self.mat[i,j] = Box(i,j,False, (0, 0, 0))
+                            if self.mat[i,j-1].is_rack == False:
+                                self.mat[i,j] = Rack(i,j,False, (0, 0, 0),i,j+1)
+                            else:
+                                self.mat[i,j] = Rack(i,j,False, (0, 0, 0),i,j-1)
                             counter=counter+1
                         elif  (self.racks_rows<=counter<self.racks_rows+2):
                             self.mat[i,j] = Box(i,j,True, (255, 255, 255))
@@ -44,7 +47,7 @@ class Layout: #disposicion
                     else:
                         self.mat[i,j] = Box(i,j,True, (255, 255, 255))
 
-        else:
+        else: #Horizontal
             self.columns = self.racks_by_row*(self.racks_columns+2)+2
             self.rows = self.racks_by_columns*4+2
             self.mat = np.zeros((self.rows,self.columns),Box)
@@ -58,8 +61,12 @@ class Layout: #disposicion
 
                     if (2<=j<=self.columns-3 and 2<=i<=self.rows-3 ):
                         if (counter<self.racks_columns):
-                            self.mat[i,j] = Box(i,j,False, (0, 0, 0))
-                            counter=counter+1
+                            if self.mat[i-1,j].is_rack == False:
+                                self.mat[i,j] = Rack(i,j,False, (0, 0, 0),i+1,j)
+                                counter=counter+1
+                            else:
+                                self.mat[i,j] = Rack(i,j,False, (0, 0, 0),i-1,j)
+                                counter=counter+1
                         elif  (self.racks_columns<=counter<self.racks_columns+2):
                             self.mat[i,j] = Box(i,j,True, (255, 255, 255))
                             counter=counter+1

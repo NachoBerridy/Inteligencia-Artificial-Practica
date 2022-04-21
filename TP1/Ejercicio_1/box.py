@@ -19,9 +19,9 @@ class Box:
 
     def set_color(self, color = (255, 255, 255)):
         if self.is_target == True:
-            self.color = ((152, 244, 16))
+            self.color = ((152, 0, 0))
         elif self.is_starting_point == True:
-            self.color = ((244, 16, 202))
+            self.color = ((0, 0, 202))
         else:
             self.color = color
    

@@ -1,4 +1,3 @@
-from msilib import sequence
 import pygame
 from pygame.draw import *
 
@@ -86,4 +85,4 @@ def main_loop(path1):
             y = y+tamaño_cuadro+1
             x = 0    
         pygame.display.flip()
-        #clock.tick(1)
+        

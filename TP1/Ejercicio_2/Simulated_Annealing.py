@@ -35,8 +35,10 @@ class Simulated_Annealing:
         self.best_state=current_state
         while self.t==True:
             T=T-1
+            
             if T==0:
                 return self.best_state
+
             pos1=random.randrange(1,(len(current_state)-1),1) 
             pos2=pos1
             while pos1==pos2:

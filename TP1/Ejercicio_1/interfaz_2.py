@@ -1,3 +1,4 @@
+from msilib import sequence
 import pygame
 from pygame.draw import *
 
@@ -7,8 +8,10 @@ def mouse_pressed(contador, path1, tamaño_cuadro):
     mouseY = int((pygame.mouse.get_pos()[1])/(tamaño_cuadro+1))
     
     if contador ==0 and path1.storage.mat[int(mouseY), int(mouseX)].is_rack != False:
+
         path1.storage.mat[mouseY, mouseX].is_starting_point = True
         path1.storage.mat[mouseY,mouseX].set_color()
+
         contador = 1
     elif contador == 1 and path1.storage.mat[int(mouseY), int(mouseX)].is_rack != False: 
         path1.storage.mat[mouseY,mouseX].is_target = True
@@ -44,11 +47,20 @@ def main_loop(path1):
             if event.type==pygame.MOUSEBUTTONDOWN:
                 contador,p=mouse_pressed(contador,path1,tamaño_cuadro)
                 if contador==1:
+                    try:
+                        """Esto borra el camino anterior"""
+                        for i in sequence:
+                            if path1.storage.mat[i[0],i[1]].is_target == True:
+                                path1.storage.mat[i[0],i[1]].is_target = False
+                            if path1.storage.mat[i[0],i[1]].is_starting_point == True:
+                                path1.storage.mat[i[0],i[1]].is_starting_point = False
+                            path1.storage.mat[i[0],i[1]].set_color((255,255,255))
+                    except:
+                        pass
                     path1.starting_point=p
                 elif contador==0:
                     path1.target=p
                     sequence=path1.a_star()
-                    #print(sequence)
                     
                     
         screen.fill((148, 148, 148))

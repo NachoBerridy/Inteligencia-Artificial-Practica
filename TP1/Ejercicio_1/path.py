@@ -87,7 +87,8 @@ class Path:
             sequence.append(self.target)
             self.target=self.storage.mat[self.target].root
             self.storage.mat[self.target].set_color((244, 216, 16))
-            ordered_sequence=list(reversed(sequence))
+        sequence.append(self.target)
+        ordered_sequence=list(reversed(sequence))
         return ordered_sequence
 
 

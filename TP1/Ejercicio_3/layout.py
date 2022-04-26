@@ -3,7 +3,7 @@ from box import Box
 from rack import Rack
 class Layout: #disposicion    
     
-    def __init__(self,racks_by_columns = 5,racks_by_row = 2,racks_order = 0,racks_columns = 2,racks_rows = 2):
+    def __init__(self,racks_by_columns = 2,racks_by_row = 5,racks_order = 0,racks_columns = 2,racks_rows = 5):
         self.columns:int #cantidad de columnas de espacios del almacen
         self.rows:int #cantidad de filas de espacios del almacen 
         self.racks_by_columns = racks_by_columns #Es la cantidad de filas de estantes en el almacen

@@ -43,7 +43,6 @@ class Simulated_Annealing:
             pos2=pos1
             while pos1==pos2:
                 pos2=random.randrange(1,(len(current_state)-1),1) 
-            
             self.new_state[pos1],self.new_state[pos2]=current_state[pos2],current_state[pos1]
             cost1=self.cost(current_state)
             cost2=self.cost(self.new_state)

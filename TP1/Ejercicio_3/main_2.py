@@ -1,11 +1,23 @@
 from Simulated_Annealing import Simulated_Annealing
-from interfaz_1 import Gui
+from path import Path
+from layout import Layout
+import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
 
-    gui_1 = Gui()
-    gui_1.root.mainloop()
-    nodes = [(5,0),(1,3),(4,8),(7,5),(5,0)]
+    layout1 = Layout()
+    layout1.fill_mat()
+    path1 = Path(layout1)
+    nodes = [1,100,5,27,98,19,21,35,28,17,15,55,34,72,26,91,1]
+
     S_Ann = Simulated_Annealing(nodes)
-    S_Ann.fill_dicts(gui_1.path1)
-    print(S_Ann.sequence(nodes,50))
+    S_Ann.fill_dicts(path1)
+    sequence, cost, T_list, states_list = S_Ann.sequence(nodes,100)
+
+    print("Mejor estado corto] %s"%sequence)
+    print("Costo: %s"%cost)
+
+    fig, ax= plt.subplots(1,3)
+    ax.plot(T_list, states_list)
+    plt.show()
+

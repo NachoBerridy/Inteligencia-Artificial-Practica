@@ -1,13 +1,17 @@
 import re
 import random
+from Simulated_Annealing_db import Simulated_Annealing
+
 class Genetic_Algorithm:
 
     def __init__(self,population):
-        self.population=population
-        self.fitness_list=[]
-        self.probability=[]
-        self.total_fitness=0
+        self.population = population
+        self.fitness_list = []
+        self.probability = []
+        self.total_fitness = 0
+
     def read_txt(self):
+
         orders=open("orders.txt","r")
         a=1
         list_1=[]
@@ -98,8 +102,14 @@ class Genetic_Algorithm:
             child[pos1],child[pos2]=child[pos2],child[pos1]
         return child
 
-    def fitness(self,lista_layoud): #lista layoud es uno de los individuos de la poblacion, osea una configuracion del layoud
-        pass
+    def fitness(self,lista_layout): #lista layout es uno de los individuos de la poblacion, osea una configuracion del layout
+        fitness = 0
+        for i in lista_layout:
+            s = Simulated_Annealing(i)
+            s.sequence(i)
+
+
+        return fitness
     
     def selec_parents(self):
         pass

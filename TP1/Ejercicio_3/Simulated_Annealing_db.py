@@ -4,7 +4,8 @@ import sqlite3 as sql
 
 class Simulated_Annealing:
 
-    def __init__(self,nodes):
+    def __init__(self, nodes, path, order):
+        self.path1 = path
         self.t=True
         self.new=nodes
         self.best__state_=nodes
@@ -20,7 +21,7 @@ class Simulated_Annealing:
             cost = cost + self.dict_cost["%s->%s"%(state[i],state[i+1])]
         return cost
 
-    def fill_dicts(self,path_1):
+    def fill_dicts(self):
 
         conexion  = sql.connect("a_star.db")
         cursor = conexion.cursor()
@@ -28,7 +29,7 @@ class Simulated_Annealing:
         Crea dos diccionarios, uno con los costos de ir de un nodo a otro y otro con el camino entre nodos
         """
 
-        for j in path_1.storage.mat:
+        for j in self.path_1.storage.mat:
             for i in j:
                 if i.is_rack == False:
                     self.racks["%s" %(i.product)] = (i.a_y,i.a_x)

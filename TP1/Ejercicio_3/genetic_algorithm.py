@@ -5,8 +5,9 @@ from Simulated_Annealing_db import Simulated_Annealing
 
 class Genetic_Algorithm:
 
-    def __init__(self,population):
-        self.population = population
+    def __init__(self,):
+        self.numero_poblacion = 0
+        self.population = []
         self.fitness_list = []
         self.probability = []
         self.total_fitness = 0
@@ -97,6 +98,9 @@ class Genetic_Algorithm:
                 child_2[i]=father_1[i]
             child_1=self.child_complete(father_1,child_1,pos1)
             child_2=self.child_complete(father_2,child_2,pos1)
+        
+        child_1=self.mutation(child_1)
+        child_2=self.mutation(child_2)
         return (child_1,child_2)
 
     def mutation(self,child):
@@ -130,7 +134,18 @@ class Genetic_Algorithm:
                 l = l + 1   
 
 
+    def first_population(self):
+        individuo = []
+        for i in range(100):
+            individuo.append(i+1)
+        while len(self.population)<self.numero_poblacion:
+            a = random.sample(individuo, 100)
+            if a not in self.population:
+                self.population.append(a)
+                
     def optimal_layout(self):
+        self.read_txt
+        self.population=self.first_population()
         iteration=0
         while iteration<50000:
             self.iteration_list.append(iteration)

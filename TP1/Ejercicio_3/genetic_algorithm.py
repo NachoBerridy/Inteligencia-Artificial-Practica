@@ -1,5 +1,6 @@
 import re
 import random
+import numpy as np
 from Simulated_Annealing_db import Simulated_Annealing
 
 class Genetic_Algorithm:
@@ -9,7 +10,10 @@ class Genetic_Algorithm:
         self.fitness_list = []
         self.probability = []
         self.total_fitness = 0
+        self.total_fitness_list = []
         self.orders = []
+        self.st_dev_list = []
+        self.iteration_list = []
 
     def read_txt(self):
 
@@ -118,7 +122,9 @@ class Genetic_Algorithm:
         pass
 
     def optimal_layout(self):
-        while p<50000:
+        iteration=0
+        while iteration<50000:
+            self.iteration_list.append(iteration)
             index_list = []
             children_list = []
             
@@ -130,9 +136,12 @@ class Genetic_Algorithm:
             for i in range(len(self.fitness_list)):
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
 
+            #lista de fitness total 
+            self.total_fitness_list.append(self.total_fitness)
+
             #lista de probabilidades de cada individuo
             for i in range(len(self.fitness_list)):
-                self.probability.append=round(self.fitness_list[i]/ self.total_fitness)
+                self.probability.append=self.fitness_list[i]/ self.total_fitness
 
             #seleccion 
             for i in range(int(len(self.population/2))):
@@ -144,9 +153,21 @@ class Genetic_Algorithm:
 
                 index_list.append(index_1,index_2)
                 children_list.extend(self.crossover(father1,father2))
+            
+            #varianza 
+            try:
+                st_dev=np.std(self.total_fitness_list[-10:])/np.average(self.total_fitness_list[-10:])
+                if st_dev<0.01:
+                    self.st_dev_list.append(st_dev)
+                    return self.best
+            except:
+                pass
 
             #AGREGAR MANTENER EL MEJOR INDIVIDUO 
 
             #nueva poblacion
             self.population=children_list[:]
-            p = p + 1
+            iteration = iteration  + 1
+
+        
+        return self.best

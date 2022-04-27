@@ -7,12 +7,13 @@ from path import Path
 
 if __name__ == "__main__":
 
-    g_a = Genetic_Algorithm()
+    g_a = Genetic_Algorithm(15)
 
-    o_layout = g_a.optimal_layout()
-    
+    o_layout, it = g_a.optimal_layout()
+    print(o_layout)
+    print(it)
     layout1 = Layout()
     layout1.fill_mat(o_layout)
     path1 = Path(layout1)
-    
+
     main_loop(path1)

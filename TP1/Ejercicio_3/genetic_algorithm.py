@@ -10,23 +10,16 @@ class Genetic_Algorithm:
         self.probability = []
         self.total_fitness = 0
         self.orders = []
+        self.best = []
 
     def read_txt(self):
 
-<<<<<<< HEAD
-        orders=open("orders.txt", "r")
-=======
         orders=open("orders.txt","r")
->>>>>>> 83f2806898390757b0ee8a8e855dd5c1732a27c9
         a = 1
         list_1 = []
         list_2 = []
         list_3 = []
-<<<<<<< HEAD
-        counter=0
-=======
         counter = 0
->>>>>>> 83f2806898390757b0ee8a8e855dd5c1732a27c9
         for i in orders:
             list_1.append(i) #txt en una lista
             if i==("Order %s\n"%(a)):
@@ -113,37 +106,43 @@ class Genetic_Algorithm:
 
     def fitness(self,list_layout): #lista layout es uno de los individuos de la poblacion, osea una configuracion del layout
         fitness = 0
-<<<<<<< HEAD
-        for i in lista_layout:
-            s = Simulated_Annealing(i)
-            s.sequence(i)
-
-=======
         for i in self.orders:
             s = Simulated_Annealing(i,list_layout)
             s.fill_dicts()
             fitness = fitness + s.sequence()[0]
             del s 
         
->>>>>>> 83f2806898390757b0ee8a8e855dd5c1732a27c9
-        return fitness
+        return 100/fitness
 
 
     def selec_parents(self):
-        pass
+        i = random.random()
+        j = 0
+        l = 0
+        for k in self.probability:
+            if j <= i <= j+k:
+                j = j+k
+                return self.population[l]
+                l = l + 1   
+
 
     def optimal_layout(self):
         while p<50000:
             index_list = []
             children_list = []
-            
+            self.fitness_list = []
+            self.total_fitness = 0
+            self.probability = []
             #lista del fitness
             for i in range(len(self.population)):
                 self.fitness_list.append(self.fitness(self.population[i]))
-
-            #fitness total
-            for i in range(len(self.fitness_list)):
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
+                try:
+                    if self.fitness_list[i]>self.fitness(self.best):
+                        self.best = self.population[i][:]
+                except:
+                    pass
+
 
             #lista de probabilidades de cada individuo
             for i in range(len(self.fitness_list)):

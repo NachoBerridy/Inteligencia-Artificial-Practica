@@ -12,11 +12,11 @@ class Genetic_Algorithm:
 
     def read_txt(self):
 
-        orders=open("orders.txt","r")
-        a=1
-        list_1=[]
-        list_2=[]
-        list_3=[]
+        orders=open("orders.txt", "r")
+        a = 1
+        list_1 = []
+        list_2 = []
+        list_3 = []
         counter=0
         for i in orders:
             list_1.append(i) #txt en una lista
@@ -29,15 +29,15 @@ class Genetic_Algorithm:
             list_3.append(list_1[list_2[i]+1:list_2[i+1]-1])
         list_3.append(list_1[list_2[len(list_2)-1]+1:-1])
         
-        list_1=[]
-        list_2=[]
+        list_1 = []
+        list_2 = []
 
         for i in range(len(list_3)):
             for j in range(len(list_3[i])):
                 for s in re.findall(r'-?\d+\.?\d*', list_3[i][j]):
                     list_2.append(int(s))
             list_1.append(list_2)
-            list_2=[]
+            list_2 = []
         
         return list_1
 
@@ -107,7 +107,6 @@ class Genetic_Algorithm:
         for i in lista_layout:
             s = Simulated_Annealing(i)
             s.sequence(i)
-
 
         return fitness
     

@@ -2,9 +2,11 @@ import re
 import random
 class Genetic_Algorithm:
 
-    def __init__(self):
-        pass
-
+    def __init__(self,population):
+        self.population=population
+        self.fitness_list=[]
+        self.probability=[]
+        self.total_fitness=0
     def read_txt(self):
         orders=open("orders.txt","r")
         a=1
@@ -85,6 +87,7 @@ class Genetic_Algorithm:
                 child_2[i]=father_1[i]
             child_1=self.child_complete(father_1,child_1,pos1)
             child_2=self.child_complete(father_2,child_2,pos1)
+        return (child_1,child_2)
 
     def mutation(self,child):
         if random.random()<0.05:
@@ -95,10 +98,42 @@ class Genetic_Algorithm:
             child[pos1],child[pos2]=child[pos2],child[pos1]
         return child
 
-    def fitness(self):
+    def fitness(self,lista_layoud): #lista layoud es uno de los individuos de la poblacion, osea una configuracion del layoud
+        pass
+    
+    def selec_parents(self):
         pass
 
-    def optimal_layout():
-        pass
+    def optimal_layout(self):
+        while p<50000:
+            index_list=[]
+            children_list=[]
+            
+            #lista del fitness
+            for i in range(len(self.population)):
+                self.fitness_list.append(self.fitness(self.population[i]))
 
-    pass
+            #fitness total
+            for i in range(len(self.fitness_list)):
+                self.total_fitness=self.total_fitness+self.fitness_list[i]
+
+            #lista de probabilidades de cada individuo
+            for i in range(len(self.fitness_list)):
+                self.probability.append=round(self.fitness_list[i]/ self.total_fitness)
+
+            #seleccion 
+            for i in range(int(len(self.population/2))):
+                father1,index_1=self.selec_parents()
+                father2=father1[:]
+                index_2=index_1
+                while father2==father1 and (index_1,index_2) in index_1:
+                    father2=self.selec_parents()
+
+                index_list.append(index_1,index_2)
+                children_list.extend(self.crossover(father1,father2))
+
+            #AGREGAR MANTENER EL MEJOR INDIVIDUO 
+
+            #nueva poblacion
+            self.population=children_list[:]
+            p=p+1

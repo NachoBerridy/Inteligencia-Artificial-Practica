@@ -1,17 +1,19 @@
 import random
 import math
-
+import sqlite3 as sql
 
 class Simulated_Annealing:
 
-    def __init__(self,nodes):
+    def __init__(self, nodes, path, order):
+        self.path1 = path
         self.t=True
         self.new=nodes
         self.best__state_=nodes
         self.dict_cost={}
-        self.dict_path = {}
         self.racks = {}
         self.nodes = nodes
+        self.nodes.append(0)
+        self.nodes.insert(0, 0)
 
     def cost(self,state):
         cost = 0
@@ -19,23 +21,29 @@ class Simulated_Annealing:
             cost = cost + self.dict_cost["%s->%s"%(state[i],state[i+1])]
         return cost
 
-    def fill_dicts(self,path_1):
+    def fill_dicts(self):
+
+        conexion  = sql.connect("a_star.db")
+        cursor = conexion.cursor()
         """
         Crea dos diccionarios, uno con los costos de ir de un nodo a otro y otro con el camino entre nodos
         """
 
-        for j in path_1.storage.mat:
+        for j in self.path_1.storage.mat:
             for i in j:
                 if i.is_rack == False:
                     self.racks["%s" %(i.product)] = (i.a_y,i.a_x)
+                elif i.is_cargo_bay == True:
+                    self.racks["0"] = (i.y,i.x)
         
         for i in range(len(self.nodes)):
             for j in range(len(self.nodes)):
                 if self.nodes[i] != self.nodes[j]:
-                    path_1.starting_point = self.racks[str(self.nodes[i])]
-                    path_1.target = self.racks[str(self.nodes[j])]
-                    self.dict_path["%s->%s"%(self.nodes[i],self.nodes[j])] = path_1.a_star()
-                    self.dict_cost["%s->%s"%(self.nodes[i],self.nodes[j])] = len(self.dict_path["%s->%s"%(self.nodes[i],self.nodes[j])])
+                    id = '%s,%s->%s,%s'%(self.racks[str(self.nodes[i])][0],self.racks[str(self.nodes[i])][1],
+                                         self.racks[str(self.nodes[j])][0],self.racks[str(self.nodes[j])][1])
+                    #La linea siguiente guarda en el diccionario de costos el costo que esta guardado en la base de datos
+                    self.dict_cost["%s->%s"%(self.nodes[i],self.nodes[j])] = cursor.execute("SELECT costo FROM astar WHERE n ='%s'"%id).fetchone()[0]
+        conexion.close()
 
 
     def sequence(self,current_state,T):
@@ -64,7 +72,7 @@ class Simulated_Annealing:
                 print ("Estado final %s"%c_state)
                 print(self.cost(c_state))
 
-                return (b_state, self.cost(b_state), list(reversed(temperature_list)), state_list)
+                return (self.cost(b_state), b_state, list(reversed(temperature_list)), list(state_list))
 
             pos1=random.randrange(1,(len(c_state)-1),1) 
             pos2=pos1

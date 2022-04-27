@@ -1,11 +1,11 @@
-from msilib import sequence
 import random
 import math
 import sqlite3 as sql
 
 class Simulated_Annealing:
 
-    def __init__(self, nodes, list_layout):
+    def __init__(self, nodes, path, order):
+        self.path1 = path
         self.t=True
         self.new=nodes
         self.best__state_=nodes
@@ -14,7 +14,6 @@ class Simulated_Annealing:
         self.nodes = nodes
         self.nodes.append(0)
         self.nodes.insert(0, 0)
-        self.list_layout = list_layout
 
     def cost(self,state):
         cost = 0
@@ -24,37 +23,30 @@ class Simulated_Annealing:
 
     def fill_dicts(self):
 
-        conexion  = sql.connect("a_star1.db")
+        conexion  = sql.connect("a_star.db")
         cursor = conexion.cursor()
         """
         Crea dos diccionarios, uno con los costos de ir de un nodo a otro y otro con el camino entre nodos
         """
 
-        """for j in self.path_1.storage.mat:
+        for j in self.path_1.storage.mat:
             for i in j:
                 if i.is_rack == False:
                     self.racks["%s" %(i.product)] = (i.a_y,i.a_x)
                 elif i.is_cargo_bay == True:
                     self.racks["0"] = (i.y,i.x)
-        """
-
+        
         for i in range(len(self.nodes)):
             for j in range(len(self.nodes)):
                 if self.nodes[i] != self.nodes[j]:
-                    #id = '%s,%s->%s,%s'%(self.racks[str(self.nodes[i])][0],self.racks[str(self.nodes[i])][1],
-                    #                     self.racks[str(self.nodes[j])][0],self.racks[str(self.nodes[j])][1])
-                    if self.nodes[i] == 0:
-                        id = '100->%s'%(self.list_layout.index(j))
-                    elif self.nodes[j] == 0:
-                        id = '%s->100'%(self.list_layout.index(i))
-                    else:
-                        id = '%s->%s'%(self.list_layout.index(i), self.list_layout.index(j))
+                    id = '%s,%s->%s,%s'%(self.racks[str(self.nodes[i])][0],self.racks[str(self.nodes[i])][1],
+                                         self.racks[str(self.nodes[j])][0],self.racks[str(self.nodes[j])][1])
                     #La linea siguiente guarda en el diccionario de costos el costo que esta guardado en la base de datos
-                    self.dict_cost["%s->%s"%(self.nodes[i], self.nodes[j])] = cursor.execute("SELECT costo FROM astar WHERE n ='%s'"%id).fetchone()[0]
+                    self.dict_cost["%s->%s"%(self.nodes[i],self.nodes[j])] = cursor.execute("SELECT costo FROM astar WHERE n ='%s'"%id).fetchone()[0]
         conexion.close()
 
 
-    def sequence(self,T):
+    def sequence(self,current_state,T):
         
         """
         Ejecuta el algoritmo de recocido simulado y devuelve una lista con el mejor orden que encontro, 
@@ -62,16 +54,16 @@ class Simulated_Annealing:
         encontrando para graficarlos 
         """   
 
-        new = self.nodes[:] #Nuevo estado depues de permutar sus nodos
-        b_state = self.nodes[:] #Mejor estado econtrado
-        c_state = self.nodes[:] #Estado actual con el que trabaja el algoritmo
+        new = current_state[:] #Nuevo estado depues de permutar sus nodos
+        b_state = current_state[:] #Mejor estado econtrado
+        c_state = current_state[:] #Estado actual con el que trabaja el algoritmo
 
         temperature_list = [T]
         state_list = [self.cost(c_state)]
 
         while self.t==True:
 
-            T = T-1
+            T=T-1
             temperature_list.append(T)
             state_list.append(self.cost(c_state))
             
@@ -79,7 +71,8 @@ class Simulated_Annealing:
 
                 print ("Estado final %s"%c_state)
                 print(self.cost(c_state))
-                return (b_state, self.cost(b_state), list(reversed(temperature_list)), list(state_list))
+
+                return (self.cost(b_state), b_state, list(reversed(temperature_list)), list(state_list))
 
             pos1=random.randrange(1,(len(c_state)-1),1) 
             pos2=pos1

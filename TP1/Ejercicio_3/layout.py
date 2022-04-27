@@ -90,27 +90,5 @@ class Layout: #disposicion
                     else:
                         self.mat[i,j] = Box(i, j, True, (255, 255, 255))
         
-        for i in range (self.rows):
-            if(i%5==0 and i!=0):
-                self.mat[i,0].is_cargo_bay = True
-                self.mat[i,0].set_color((157, 157, 157 ))
-
-
-
-
-
-"""
-objeto = Layout (3,4,1,4,60)
-
-objeto.fill_mat()
-matriz_prueba = np.zeros((objeto.rows,objeto.columns),int)
-for j in range (objeto.columns):
-    for i in range (objeto.rows):
-        if objeto.mat[i,j].is_rack == True:
-            matriz_prueba[i,j] = 0
-        else:
-            matriz_prueba[i,j] = 1
-
-for line in matriz_prueba:
-    print ('  '.join(map(str, line)))
-"""
+        self.mat[7,0].is_cargo_bay = True
+        self.mat[7,0].set_color((157, 157, 157 ))

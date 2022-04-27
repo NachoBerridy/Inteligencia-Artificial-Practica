@@ -3,7 +3,7 @@ from re import X
 
 class Box:
 
-    def __init__(self,x:int,y:int,rack:bool, color):
+    def __init__(self,y:int,x:int,rack:bool, color):
         
         self.x = x
         self.y = y
@@ -23,6 +23,8 @@ class Box:
             self.color = ((152, 244, 16))
         elif self.is_starting_point == True:
             self.color = ((244, 16, 202))
+        elif self.is_cargo_bay == True:
+            self.color = ((157, 157, 157 ))
         else:
             self.color = color
    

@@ -162,19 +162,19 @@ class Genetic_Algorithm:
         self.best = self.population[0][:]
         iteration=0
         
-        while iteration<13:
+        while iteration<15:
             self.iteration_list.append(iteration)
             index_list = []
             children_list = []
             self.fitness_list = []
             self.total_fitness = 0
             self.probability = []
-            aux=0
+            real_fitness=0
             #lista del fitness
             for i in range(len(self.population)):
                 self.fitness_list.append(self.fitness(self.population[i]))
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
-                aux = aux + 100/self.fitness_list[i]
+                real_fitness = real_fitness + 100/self.fitness_list[i]
                 try:
                     if self.fitness_list[i]>self.fitness(self.best):
                         self.best = self.population[i][:]
@@ -183,7 +183,7 @@ class Genetic_Algorithm:
 
 
             #lista de fitness total 
-            self.total_fitness_list.append(aux)
+            self.total_fitness_list.append(real_fitness)
 
             #lista de probabilidades de cada individuo
             for i in range(len(self.fitness_list)):

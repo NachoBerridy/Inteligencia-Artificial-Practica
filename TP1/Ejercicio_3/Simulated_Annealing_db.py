@@ -51,7 +51,7 @@ class Simulated_Annealing:
         el costo de dicho orden y ademas una lista de las T y una de los costos de cada orden que ha ido
         encontrando para graficarlos 
         """   
-        """if 0>len(self.nodes)>=10:
+        if 0>len(self.nodes)>=10:
             T=150
         elif 10>len(self.nodes)>=20:
             T=300
@@ -59,8 +59,7 @@ class Simulated_Annealing:
             T=600
         else:
             T=800
-        """
-        T=150
+
         new = self.nodes[:] #Nuevo estado depues de permutar sus nodos
         b_state = self.nodes[:] #Mejor estado econtrado
         c_state = self.nodes[:] #Estado actual con el que trabaja el algoritmo

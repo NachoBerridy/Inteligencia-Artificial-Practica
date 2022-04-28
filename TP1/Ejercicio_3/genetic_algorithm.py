@@ -11,6 +11,7 @@ class Genetic_Algorithm:
         self.numero_poblacion = n_population
         self.population = []
         self.fitness_list = []
+        self.real_fitness_list = []
         self.probability = []
         self.total_fitness = 0
         self.total_fitness_list = []
@@ -23,7 +24,7 @@ class Genetic_Algorithm:
 
     def read_txt(self):
 
-        orders=open("C:\\Nacho\\Facultad\\IA2\\Grupo6-IA-II\\TP1\\Ejercicio_3\\orders.txt","r")
+        orders=open("C:\\Anto\\Facultad\\IA-II\\Grupo6-IA-II\\TP1\\Ejercicio_3\\orders.txt","r")
         a = 1
         list_1 = []
         list_2 = []
@@ -163,16 +164,21 @@ class Genetic_Algorithm:
         iteration=0
         
         while iteration<15:
+            print(iteration)
             self.iteration_list.append(iteration)
             index_list = []
             children_list = []
             self.fitness_list = []
             self.total_fitness = 0
             self.probability = []
+            self.real_fitness_list = []
             real_fitness=0
             #lista del fitness
             for i in range(len(self.population)):
                 self.fitness_list.append(self.fitness(self.population[i]))
+
+                self.real_fitness_list.append(100/self.fitness_list[i]) 
+
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
                 real_fitness = real_fitness + 100/self.fitness_list[i]
                 try:
@@ -200,12 +206,13 @@ class Genetic_Algorithm:
                 children_list.extend(self.crossover())
             
             #Desviación estandar relativa a la media 
-            if iteration>9:
-                st_dev=np.std(self.total_fitness_list[-10:])/np.average(self.total_fitness_list[-10:])
-                self.st_dev_list.append(st_dev)
-                if st_dev<0.01:
-                    print("converge")
-                    return self.best
+            #if iteration>9:
+                #st_dev=np.std(self.total_fitness_list[-10:])/np.average(self.total_fitness_list[-10:])
+            st_dev=np.std(self.real_fitness_list[:])/np.average(self.real_fitness_list[:])
+            self.st_dev_list.append(st_dev)
+            if st_dev<0.01:
+                print("converge")
+                return self.best
         
             #nueva poblacion
             self.population=children_list[:]

@@ -16,7 +16,7 @@ if __name__ == "__main__":
         pass
     S_Ann = Simulated_Annealing(nodes)
     S_Ann.fill_dicts(path1)
-    sequence, cost, T_list, states_list = S_Ann.sequence(nodes, 600000)
+    sequence, cost, T_list, states_list = S_Ann.sequence(nodes, 6000)
 
     print("Mejor estado: %s"%sequence)
     print("Costo: %s"%cost)

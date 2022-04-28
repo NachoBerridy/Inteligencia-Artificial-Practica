@@ -1,9 +1,9 @@
-from ast import iter_child_nodes
 import re
 import random
-from select import select
 import numpy as np
-from Simulated_Annealing_db import Simulated_Annealing
+import pandas as pd
+from path import *
+from Simulated_Annealing_df import Simulated_Annealing
 
 class Genetic_Algorithm:
 
@@ -53,6 +53,39 @@ class Genetic_Algorithm:
         
         self.orders = list_1[:]
         #print(self.orders)
+
+    def crate_df(self):
+        layout1 = Layout()
+        layout1.fill_mat()
+        path_1 = Path(layout1)
+        df = pd.DataFrame()
+        
+        racks = []
+        costos = []
+        id_list = [] 
+
+        for j in path_1.storage.mat:
+            for i in j:
+                if i.is_rack == False:
+                    racks.append((i.a_y,i.a_x))
+        for j in path_1.storage.mat:
+            for i in j:
+                if i.is_cargo_bay == True:
+                    racks.append((i.y,i.x))
+
+        for i in range(len(racks)):
+                for j in range(len(racks)):
+                    if racks[i] != racks[j]:
+                        #id  = '%s,%s->%s,%s'%(racks[i][0],racks[i][1],racks[j][0],racks[j][1])
+                        id = '%s->%s'%(i,j)
+                        path_1.starting_point = (racks[i][0],racks[i][1])
+                        path_1.target = (racks[j][0],racks[j][1])
+                        id_list.append(id)
+                        costos.append(len(path_1.a_star()))
+
+        df.index = id_list[:]
+        df['costo'] = costos[:]
+        return (df)
 
     def child_complete(self,father,child,pos): 
         aux=[]
@@ -118,12 +151,12 @@ class Genetic_Algorithm:
             child[pos1],child[pos2]=child[pos2],child[pos1]
         return child
 
-    def fitness(self,list_layout): #lista layout es uno de los individuos de la poblacion, osea una configuracion del layout
+    def fitness(self, list_layout, df): #lista layout es uno de los individuos de la poblacion, osea una configuracion del layout
         fitness = 0
         #print(self.orders)
         for i in self.orders:
             #print(self.orders.index(i))
-            s = Simulated_Annealing(i,list_layout)
+            s = Simulated_Annealing(i,list_layout, df)
             s.fill_dicts()
             fitness = fitness + s.sequence()[0]
             del s 
@@ -159,6 +192,7 @@ class Genetic_Algorithm:
                 
     def optimal_layout(self):
         self.read_txt()
+        df = self.crate_df()
         self.first_population()
         self.best = self.population[0][:]
         iteration=0
@@ -175,14 +209,14 @@ class Genetic_Algorithm:
             real_fitness=0
             #lista del fitness
             for i in range(len(self.population)):
-                self.fitness_list.append(self.fitness(self.population[i]))
+                self.fitness_list.append(self.fitness(self.population[i], df))
 
                 self.real_fitness_list.append(100/self.fitness_list[i]) 
 
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
                 real_fitness = real_fitness + 100/self.fitness_list[i]
                 try:
-                    if self.fitness_list[i]>self.fitness(self.best):
+                    if self.fitness_list[i]>self.fitness(self.best, df):
                         self.best = self.population[i][:]
                 except:
                     pass

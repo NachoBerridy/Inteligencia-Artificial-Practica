@@ -3,6 +3,7 @@ import random
 import math
 import sqlite3 as sql
 
+
 class Simulated_Annealing:
 
     def __init__(self, nodes, list_layout):

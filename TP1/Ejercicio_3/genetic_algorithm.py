@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from path import *
 from Simulated_Annealing_df import Simulated_Annealing
+import time
 
 class Genetic_Algorithm:
 
@@ -24,7 +25,7 @@ class Genetic_Algorithm:
 
     def read_txt(self):
 
-        orders=open("C:\\Anto\\Facultad\\IA-II\\Grupo6-IA-II\\TP1\\Ejercicio_3\\orders.txt","r")
+        orders=open("Ejercicio_3/orders.txt","r")
         a = 1
         list_1 = []
         list_2 = []
@@ -115,6 +116,7 @@ class Genetic_Algorithm:
 
 
     def crossover(self):
+        inicio = time.time()
         child_1=[]
         child_2=[]
         for i in range(len(self.father1)):
@@ -140,18 +142,24 @@ class Genetic_Algorithm:
         
         child_1=self.mutation(child_1)[:]
         child_2=self.mutation(child_2)[:]
+        fin = time.time()
+        print("Tiempo de ejecucion de crossover:" ,(fin-inicio))
         return (child_1,child_2)
 
     def mutation(self,child):
+        inicio = time.time()
         if random.random()<0.05:
             pos1=random.randrange(0,len(child),1)
             pos2=pos1
             while pos1==pos2:
                 pos2=random.randrange(1,len(child),1) 
             child[pos1],child[pos2]=child[pos2],child[pos1]
+        fin = time.time()
+        print("Tiempo de ejecucion de mutation:" ,(fin-inicio))
         return child
 
     def fitness(self, list_layout, df): #lista layout es uno de los individuos de la poblacion, osea una configuracion del layout
+        inicio = time.time()
         fitness = 0
         #print(self.orders)
         for i in self.orders:
@@ -160,11 +168,13 @@ class Genetic_Algorithm:
             s.fill_dicts()
             fitness = fitness + s.sequence()[0]
             del s 
-        
+        fin = time.time()
+        print("Tiempo de ejecucion de fitness:" ,(fin-inicio))
         return 100/fitness
 
 
     def selec_parents(self, p):
+        inicio = time.time()
         i = random.random()
         j = 0
         l = 0
@@ -174,6 +184,8 @@ class Genetic_Algorithm:
                     self.father1 = self.population[l][:]
                 elif p==2:
                     self.father2 = self.population[l][:]
+                fin = time.time()
+                print("Tiempo de ejecucion de select parents%s: %s"%(p,fin-inicio))
                 return (l)
             j = j+k
             l = l + 1  
@@ -207,6 +219,7 @@ class Genetic_Algorithm:
             self.probability = []
             self.real_fitness_list = []
             real_fitness=0
+            best_fitness = self.fitness(self.best, df)
             #lista del fitness
             for i in range(len(self.population)):
                 self.fitness_list.append(self.fitness(self.population[i], df))
@@ -216,8 +229,9 @@ class Genetic_Algorithm:
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
                 real_fitness = real_fitness + 100/self.fitness_list[i]
                 try:
-                    if self.fitness_list[i]>self.fitness(self.best, df):
+                    if self.fitness_list[i]>best_fitness:
                         self.best = self.population[i][:]
+                        best_fitness = self.fitness_list[i]
                 except:
                     pass
 

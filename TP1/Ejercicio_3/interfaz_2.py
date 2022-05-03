@@ -59,6 +59,7 @@ def main_loop(path1):
     
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Grupo 6 - A* (Ejercicio 1)")
+    fuente = pygame.font.Font(None, 20)
     clock = pygame.time.Clock()
     contador = 0
 
@@ -95,6 +96,10 @@ def main_loop(path1):
         for i in range(path1.storage.rows):
             for j in range(path1.storage.columns):
                 rect(screen, path1.storage.mat[i,j].color, [x, y,tamaño_cuadro, tamaño_cuadro])
+                if path1.storage.mat[i,j].is_rack == False:
+                    text = str(path1.storage.mat[i,j].product)
+                    mensaje = fuente.render(text, 1, (255, 255, 255))
+                    screen.blit(mensaje, (x, y))
                 x = x+tamaño_cuadro+1
             y = y+tamaño_cuadro+1
             x = 0    

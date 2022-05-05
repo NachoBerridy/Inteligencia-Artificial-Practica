@@ -106,11 +106,15 @@ class Genetic_Algorithm:
             if father[j] not in child: 
                 aux.append(father[j])
     
+        for j in range(pos,len(father)):
+            if child[j]==0:
+                child[j]=aux[c]
+                c=c+1
         while c<len(aux):
-            for j in range(pos,len(father)):
-                if child[j]==0:
-                    child[j]=aux[c]
-                    c=c+1
+            #for j in range(pos,len(father)):
+                #if child[j]==0:
+                    #child[j]=aux[c]
+                    #c=c+1
             child[c_2]=aux[c]
             c=c+1
             c_2=c_2+1
@@ -222,9 +226,7 @@ class Genetic_Algorithm:
             self.probability = []
             self.real_fitness_list = []
             real_fitness=0
-            #best_fitness = self.fitness(self.best, df)
-            #lista del fitness
-            print("poblacion: ",len(self.population))
+
             for i in range(len(self.population)):
                 self.fitness_list.append(self.fitness(self.population[i], df))
 
@@ -234,18 +236,11 @@ class Genetic_Algorithm:
                 real_fitness = real_fitness + self.real_fitness_list[i]
                 if i==0 and iteration==0:
                     self.best_fitness=self.real_fitness_list[0]
-                #try:
                 
                 if self.real_fitness_list[i]<self.best_fitness:
-                    print("Nuevo best state con fitness: ",self.real_fitness_list[i])
                     self.best = self.population[i][:]
                     self.best_fitness = self.real_fitness_list[i]
-                else:
-                     print("Fitness %s > %s best"%(self.real_fitness_list[i], self.best_fitness))
-                #except:
-                    #pass
 
-            print("El real fitness de esta poblacion es: ", real_fitness)
             #lista de fitness total 
             self.total_fitness_list.append(real_fitness)
 
@@ -262,17 +257,16 @@ class Genetic_Algorithm:
                     index_2 = self.selec_parents(2)
                 index_list.append((index_1, index_2))
                 children_list.extend(self.crossover())
-            if len(self.population)%2==0:
+            if len(self.population)%2!=0:
                 children_list.append(self.population[0])
             
             #Desviación estandar relativa a la media 
-            #if iteration>9:
-                #st_dev=np.std(self.total_fitness_list[-10:])/np.average(self.total_fitness_list[-10:])
+
             if iteration>5:
                 st_dev=np.std(self.real_fitness_list[:])/np.average(self.real_fitness_list[:])
                 st_dev2=np.std(self.total_fitness_list[-5:])/np.average(self.total_fitness_list[-5:])
                 #self.st_dev_list.append(st_dev)
-                if st_dev<0.005 and st_dev2<0.005:
+                if st_dev<0.0001 and st_dev2<0.0001:
                     print("converge")
                     return self.best
         

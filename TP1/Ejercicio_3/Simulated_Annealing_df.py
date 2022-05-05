@@ -6,10 +6,7 @@ class Simulated_Annealing:
 
     def __init__(self, nodes, list_layout, df):
         self.t=True
-        self.new=nodes[:]
-        self.best__state_=nodes[:]
         self.dict_cost={}
-        self.racks = {}
         self.nodes = nodes[:]
         self.nodes.append(0)
         self.nodes.insert(0, 0)
@@ -18,7 +15,7 @@ class Simulated_Annealing:
 
     def cost(self,state):
         cost = 0
-        for i in range(len(state)-1):
+        for i in range(1, len(state)-1):
             cost = cost + self.dict_cost["%s->%s"%(state[i],state[i+1])]
         return cost
 
@@ -61,25 +58,23 @@ class Simulated_Annealing:
         new = self.nodes[:] #Nuevo estado depues de permutar sus nodos
         b_state = self.nodes[:] #Mejor estado econtrado
         c_state = self.nodes[:] #Estado actual con el que trabaja el algoritmo
-
-        temperature_list = [T]
-        #print(c_state)
-        state_list = [self.cost(c_state)]
+        
+        #state_list = []
+        #temperature_list = [T]
+        best_cost=self.cost(c_state)
 
         while self.t==True:
 
             T = T-1
-            temperature_list.append(T)
-            state_list.append(self.cost(c_state))
+            #temperature_list.append(T)
+            #print(T)
             
             if T==0:
-
-                #print ("Estado final %s"%c_state)
-                #print(self.cost(c_state))
-                return (self.cost(b_state), b_state,list(reversed(temperature_list)), list(state_list))
+                return (best_cost, b_state) #list(reversed(temperature_list)), list(state_list))
 
             pos1=random.randrange(1,(len(c_state)-1),1) 
             pos2=pos1
+
             while pos1==pos2:
                 pos2=random.randrange(1,(len(c_state)-1),1) 
 
@@ -91,11 +86,14 @@ class Simulated_Annealing:
 
             if deltaE<0 or (random.random()<(math.exp(-deltaE/T)) and deltaE>0):
                 c_state=new[:]
+                cost1=cost2
                 
-            if self.cost(c_state)<self.cost(b_state):
+            if cost1<best_cost :
                 b_state=c_state[:]
+                best_cost=cost1
 
             new = c_state[:]
+            #state_list.append(cost1)
 
                 
 

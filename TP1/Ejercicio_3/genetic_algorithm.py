@@ -18,6 +18,7 @@ class Genetic_Algorithm:
         self.total_fitness_list = []
         self.orders = []
         self.best = []
+        self.best_fitness=0
         self.st_dev_list = []
         self.iteration_list = []
         self.father1 = []
@@ -25,7 +26,7 @@ class Genetic_Algorithm:
 
     def read_txt(self):
 
-        orders=open("Ejercicio_3/orders.txt","r")
+        orders=open("C:\\DiscoD\\Nacho\\Facultad\\Materias_en_curso\\9-IA2\\Grupo6-IA-II\\TP1\\Ejercicio_3\\orders.txt","r")
         a = 1
         list_1 = []
         list_2 = []
@@ -86,6 +87,7 @@ class Genetic_Algorithm:
 
         df.index = id_list[:]
         df['costo'] = costos[:]
+        #print(df.loc['23->25',"costo"])
         return (df)
 
     def child_complete(self,father,child,pos): 
@@ -116,7 +118,7 @@ class Genetic_Algorithm:
 
 
     def crossover(self):
-        inicio = time.time()
+        #inicio = time.time()
         child_1=[]
         child_2=[]
         for i in range(len(self.father1)):
@@ -142,24 +144,24 @@ class Genetic_Algorithm:
         
         child_1=self.mutation(child_1)[:]
         child_2=self.mutation(child_2)[:]
-        fin = time.time()
-        print("Tiempo de ejecucion de crossover:" ,(fin-inicio))
+        #fin = time.time()
+        #print("Tiempo de ejecucion de crossover:" ,(fin-inicio))
         return (child_1,child_2)
 
     def mutation(self,child):
-        inicio = time.time()
+        #inicio = time.time()
         if random.random()<0.05:
             pos1=random.randrange(0,len(child),1)
             pos2=pos1
             while pos1==pos2:
                 pos2=random.randrange(1,len(child),1) 
             child[pos1],child[pos2]=child[pos2],child[pos1]
-        fin = time.time()
-        print("Tiempo de ejecucion de mutation:" ,(fin-inicio))
+        #fin = time.time()
+        #print("Tiempo de ejecucion de mutation:" ,(fin-inicio))
         return child
 
     def fitness(self, list_layout, df): #lista layout es uno de los individuos de la poblacion, osea una configuracion del layout
-        inicio = time.time()
+        #inicio = time.time()
         fitness = 0
         #print(self.orders)
         for i in self.orders:
@@ -168,13 +170,13 @@ class Genetic_Algorithm:
             s.fill_dicts()
             fitness = fitness + s.sequence()[0]
             del s 
-        fin = time.time()
-        print("Tiempo de ejecucion de fitness:" ,(fin-inicio))
+        #fin = time.time()
+        #print("Tiempo de ejecucion de fitness:" ,(fin-inicio))
         return 100/fitness
 
 
     def selec_parents(self, p):
-        inicio = time.time()
+        #inicio = time.time()
         i = random.random()
         j = 0
         l = 0
@@ -184,8 +186,8 @@ class Genetic_Algorithm:
                     self.father1 = self.population[l][:]
                 elif p==2:
                     self.father2 = self.population[l][:]
-                fin = time.time()
-                print("Tiempo de ejecucion de select parents%s: %s"%(p,fin-inicio))
+                #fin = time.time()
+                #print("Tiempo de ejecucion de select parents%s: %s"%(p,fin-inicio))
                 return (l)
             j = j+k
             l = l + 1  
@@ -210,6 +212,7 @@ class Genetic_Algorithm:
         iteration=0
         
         while iteration<15:
+            tiempo_inicial=time.time()
             print(iteration)
             self.iteration_list.append(iteration)
             index_list = []
@@ -219,7 +222,7 @@ class Genetic_Algorithm:
             self.probability = []
             self.real_fitness_list = []
             real_fitness=0
-            best_fitness = self.fitness(self.best, df)
+            #best_fitness = self.fitness(self.best, df)
             #lista del fitness
             for i in range(len(self.population)):
                 self.fitness_list.append(self.fitness(self.population[i], df))
@@ -228,10 +231,12 @@ class Genetic_Algorithm:
 
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
                 real_fitness = real_fitness + 100/self.fitness_list[i]
+                if i==0 and iteration==0:
+                    self.best_fitness=self.real_fitness_list[0]
                 try:
-                    if self.fitness_list[i]>best_fitness:
+                    if self.real_fitness_list[i]<self.best_fitness:
                         self.best = self.population[i][:]
-                        best_fitness = self.fitness_list[i]
+                        self.best_fitness = self.real_fitness_list[i]
                 except:
                     pass
 
@@ -256,15 +261,18 @@ class Genetic_Algorithm:
             #Desviación estandar relativa a la media 
             #if iteration>9:
                 #st_dev=np.std(self.total_fitness_list[-10:])/np.average(self.total_fitness_list[-10:])
-            st_dev=np.std(self.real_fitness_list[:])/np.average(self.real_fitness_list[:])
-            self.st_dev_list.append(st_dev)
-            if st_dev<0.01:
-                print("converge")
-                return self.best
+            if iteration>5:
+                st_dev=np.std(self.real_fitness_list[:])/np.average(self.real_fitness_list[:])
+                self.st_dev_list.append(st_dev)
+                if st_dev<0.005:
+                    print("converge")
+                    return self.best
         
             #nueva poblacion
             self.population=children_list[:]
             iteration = iteration  + 1
 
         #print(self.total_fitness)
+            tiempo_final=time.time()
+            print("el tiempo de iteracion es:",(tiempo_final-tiempo_inicial))
         return (self.best)

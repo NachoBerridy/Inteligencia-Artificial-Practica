@@ -22,6 +22,6 @@ if __name__ == "__main__":
     except:
         pass
     """
-    ax                                                                                                                                                                                                                                                                         .plot(g_a.iteration_list, g_a.total_fitness_list)
+    ax.plot(g_a.iteration_list, g_a.total_fitness_list)
     plt.show()
     main_loop(path1)

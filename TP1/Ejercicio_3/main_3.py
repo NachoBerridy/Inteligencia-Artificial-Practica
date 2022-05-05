@@ -16,12 +16,14 @@ if __name__ == "__main__":
     layout1.fill_mat(o_layout)
     path1 = Path(layout1)
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(1,2)
     """try:
         ax[0].plot(g_a.iteration_list[(len(g_a.iteration_list)-len(g_a.st_dev_list)):], g_a.st_dev_list)
     except:
         pass
     """
-    ax.plot(g_a.iteration_list, g_a.total_fitness_list)
+    ax[0].plot(g_a.iteration_list, g_a.total_fitness_list)
+    ax[1].scatter(g_a.iteration_list, g_a.dispersion)
     plt.show()
     main_loop(path1)
+ 

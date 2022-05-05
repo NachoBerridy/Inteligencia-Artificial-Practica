@@ -26,7 +26,7 @@ class Genetic_Algorithm:
 
     def read_txt(self):
 
-        orders=open("C:\\DiscoD\\Nacho\\Facultad\\Materias_en_curso\\9-IA2\\Grupo6-IA-II\\TP1\\Ejercicio_3\\orders.txt","r")
+        orders=open("Ejercicio_3\orders.txt","r")
         a = 1
         list_1 = []
         list_2 = []

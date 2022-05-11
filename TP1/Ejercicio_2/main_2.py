@@ -22,7 +22,9 @@ if __name__ == "__main__":
     print("Costo: %s"%cost)
 
     
-    """fig, ax= plt.subplots(1,3)
-    ax.plot(T_list, states_list)
+    fig, ax= plt.subplots()
+    ax.bar(T_list, states_list)
+    ax.set_xlabel('Temperatura')
+    ax.set_ylabel('Costo')
     plt.show()
-    """
+    

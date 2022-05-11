@@ -1,5 +1,8 @@
+
 import random
 import math
+
+import numpy
 
 
 class Simulated_Annealing:
@@ -34,8 +37,6 @@ class Simulated_Annealing:
                         id = '%s->100'%(self.list_layout.index(i))
                     else:
                         id = '%s->%s'%(self.list_layout.index(i), self.list_layout.index(j))
-                    #La linea siguiente guarda en el diccionario de costos el costo que esta guardado en la base de datos
-                    #self.dict_cost["%s->%s"%(self.nodes[i], self.nodes[j])] = cursor.execute("SELECT costo FROM astar WHERE n ='%s'"%id).fetchone()[0]
                     self.dict_cost["%s->%s"%(self.nodes[i], self.nodes[j])] = self.df.loc["%s->%s"%(self.nodes[i], self.nodes[j]),"costo"]
 
 
@@ -46,14 +47,18 @@ class Simulated_Annealing:
         el costo de dicho orden y ademas una lista de las T y una de los costos de cada orden que ha ido
         encontrando para graficarlos 
         """   
+        """
         if 0>len(self.nodes)>=10:
-            T=150
+            T=1000
         elif 10>len(self.nodes)>=20:
-            T=300
+            T=1000
         elif 20>len(self.nodes)>=30:
-            T=600
+            T=1000
         else:
-            T=800
+            T=1000
+        """
+        T = 10
+        Y = 2000
 
         new = self.nodes[:] #Nuevo estado depues de permutar sus nodos
         b_state = self.nodes[:] #Mejor estado econtrado
@@ -64,12 +69,14 @@ class Simulated_Annealing:
         best_cost=self.cost(c_state)
 
         while self.t==True:
-
-            T = T-1
+            
+            T = math.log(Y, 3)
+            #T =Y**(3)
+            Y = Y - 1
             #temperature_list.append(T)
             #print(T)
             
-            if T==0:
+            if T<0.0001:
                 return (best_cost, b_state) #list(reversed(temperature_list)), list(state_list))
 
             pos1=random.randrange(1,(len(c_state)-1),1) 

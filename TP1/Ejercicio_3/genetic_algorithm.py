@@ -24,6 +24,8 @@ class Genetic_Algorithm:
         self.father1 = []
         self.father2 = []
 
+        self.dispersion = []
+
     def read_txt(self):
 
         orders=open("Ejercicio_3\orders.txt","r")
@@ -54,7 +56,6 @@ class Genetic_Algorithm:
             list_2 = []
         
         self.orders = list_1[:]
-        #print(self.orders)
 
     def crate_df(self):
         layout1 = Layout()
@@ -231,7 +232,7 @@ class Genetic_Algorithm:
                 self.fitness_list.append(self.fitness(self.population[i], df))
 
                 self.real_fitness_list.append(100/self.fitness_list[i]) 
-
+        
                 self.total_fitness = self.total_fitness + self.fitness_list[i]
                 real_fitness = real_fitness + self.real_fitness_list[i]
                 if i==0 and iteration==0:
@@ -241,6 +242,7 @@ class Genetic_Algorithm:
                     self.best = self.population[i][:]
                     self.best_fitness = self.real_fitness_list[i]
 
+            self.dispersion.append(self.real_fitness_list[:])
             #lista de fitness total 
             self.total_fitness_list.append(real_fitness)
 
@@ -258,7 +260,7 @@ class Genetic_Algorithm:
                 index_list.append((index_1, index_2))
                 children_list.extend(self.crossover())
             if len(self.population)%2!=0:
-                children_list.append(self.population[0])
+                children_list.append(self.population[0][:])
             
             #Desviación estandar relativa a la media 
 
@@ -269,9 +271,11 @@ class Genetic_Algorithm:
                 if st_dev<0.0001 and st_dev2<0.0001:
                     print("converge")
                     return self.best
-        
+
+            self.population = []
             #nueva poblacion
-            self.population=children_list[:]
+            for i in children_list:
+                self.population.append(i[:])
             iteration = iteration  + 1
 
         #print(self.total_fitness)

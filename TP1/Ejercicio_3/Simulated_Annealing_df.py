@@ -16,6 +16,7 @@ class Simulated_Annealing:
         self.list_layout = list_layout[:]
         self.df = df
 
+
     def cost(self,state):
         cost = 0
         for i in range(1, len(state)-1):
@@ -58,7 +59,7 @@ class Simulated_Annealing:
             T=1000
         """
         T = 10
-        Y = 2000
+        Y = 1000
 
         new = self.nodes[:] #Nuevo estado depues de permutar sus nodos
         b_state = self.nodes[:] #Mejor estado econtrado
@@ -70,7 +71,7 @@ class Simulated_Annealing:
 
         while self.t==True:
             
-            T = math.log(Y, 3)
+            T = math.log(Y, 20)
             #T =Y**(3)
             Y = Y - 1
             #temperature_list.append(T)

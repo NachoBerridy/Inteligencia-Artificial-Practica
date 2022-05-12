@@ -5,7 +5,7 @@ import sqlite3 as sql
 class Simulated_Annealing:
 
     def __init__(self, nodes, path, order):
-        self.path1 = path
+        self.path_1 = path
         self.t=True
         self.new=nodes
         self.best__state_=nodes
@@ -46,7 +46,7 @@ class Simulated_Annealing:
         conexion.close()
 
 
-    def sequence(self,current_state,T):
+    def sequence(self,current_state):
         
         """
         Ejecuta el algoritmo de recocido simulado y devuelve una lista con el mejor orden que encontro, 
@@ -60,10 +60,14 @@ class Simulated_Annealing:
 
         temperature_list = [T]
         state_list = [self.cost(c_state)]
+        T = 10
+        Y = 1000
+        
 
         while self.t==True:
 
-            T=T-1
+            T = math.log(Y, 20)
+            Y = Y - 1
             temperature_list.append(T)
             state_list.append(self.cost(c_state))
             

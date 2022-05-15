@@ -48,37 +48,47 @@ class Simulated_Annealing:
         el costo de dicho orden y ademas una lista de las T y una de los costos de cada orden que ha ido
         encontrando para graficarlos 
         """   
-        """
-        if 0>len(self.nodes)>=10:
-            T=1000
-        elif 10>len(self.nodes)>=20:
-            T=1000
-        elif 20>len(self.nodes)>=30:
-            T=1000
+        X = 0 
+        if 0<len(self.nodes)<=10:
+            Y = 1000
+        elif 10<len(self.nodes)<=20:
+            Y = 100
+        elif 20<len(self.nodes)<=30:
+            Y = 100
         else:
+<<<<<<< HEAD
+            Y = 3000
+
+=======
             T=1000
         """
         T = 10
         Y = 1000
+>>>>>>> 47632ea7abea1e668df44e72c6369b03403a5cb0
 
         new = self.nodes[:] #Nuevo estado depues de permutar sus nodos
         b_state = self.nodes[:] #Mejor estado econtrado
         c_state = self.nodes[:] #Estado actual con el que trabaja el algoritmo
         
-        #state_list = []
-        #temperature_list = [T]
-        best_cost=self.cost(c_state)
+        best_cost=self.cost(b_state)
 
-        while self.t==True:
+        while self.t==True :
             
+<<<<<<< HEAD
+            Y = Y -1
+            T = (math.log(Y, 100))
+            #Y = Y - 1
+            #T = 10*math.exp(-X/50)
+=======
             T = math.log(Y, 20)
             #T =Y**(3)
             Y = Y - 1
             #temperature_list.append(T)
             #print(T)
+>>>>>>> 47632ea7abea1e668df44e72c6369b03403a5cb0
             
-            if T<0.0001:
-                return (best_cost, b_state) #list(reversed(temperature_list)), list(state_list))
+            if T<0.00001:
+                return (best_cost, b_state) 
 
             pos1=random.randrange(1,(len(c_state)-1),1) 
             pos2=pos1
@@ -86,7 +96,7 @@ class Simulated_Annealing:
             while pos1==pos2:
                 pos2=random.randrange(1,(len(c_state)-1),1) 
 
-            new[pos1],new[pos2]=new[pos2],new[pos1]
+            new[pos1],new[pos2] = new[pos2],new[pos1]
 
             cost1=self.cost(c_state)
             cost2=self.cost(new)

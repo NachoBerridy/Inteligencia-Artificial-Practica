@@ -57,7 +57,8 @@ class Genetic_Algorithm:
         
         self.orders = list_1[:]
 
-    def crate_df(self):
+    def create_df(self):
+        
         layout1 = Layout()
         layout1.fill_mat()
         path_1 = Path(layout1)
@@ -79,7 +80,6 @@ class Genetic_Algorithm:
         for i in range(len(racks)):
                 for j in range(len(racks)):
                     if racks[i] != racks[j]:
-                        #id  = '%s,%s->%s,%s'%(racks[i][0],racks[i][1],racks[j][0],racks[j][1])
                         id = '%s->%s'%(i,j)
                         path_1.starting_point = (racks[i][0],racks[i][1])
                         path_1.target = (racks[j][0],racks[j][1])
@@ -88,7 +88,6 @@ class Genetic_Algorithm:
 
         df.index = id_list[:]
         df['costo'] = costos[:]
-        #print(df.loc['23->25',"costo"])
         return (df)
 
     def child_complete(self,father,child,pos): 
@@ -211,7 +210,7 @@ class Genetic_Algorithm:
                 
     def optimal_layout(self):
         self.read_txt()
-        df = self.crate_df()
+        df = self.create_df()
         self.first_population()
         self.best = self.population[0][:]
         iteration=0

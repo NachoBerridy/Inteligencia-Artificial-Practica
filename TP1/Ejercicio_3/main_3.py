@@ -2,6 +2,7 @@ from layout_ga import Layout
 from genetic_algorithm import Genetic_Algorithm
 from interfaz_2 import*
 from path import Path
+import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
@@ -17,13 +18,24 @@ if __name__ == "__main__":
     path1 = Path(layout1)
 
     fig, ax = plt.subplots(1,2)
-    """try:
-        ax[0].plot(g_a.iteration_list[(len(g_a.iteration_list)-len(g_a.st_dev_list)):], g_a.st_dev_list)
-    except:
-        pass
-    """
+
+    it = [] 
+    dis = []
+
+    for i in (g_a.iteration_list):
+        for j in range(len(g_a.iteration_list)):
+            it.append(i)
+
+    for i in g_a.dispersion:
+        for j in range(len(i)):
+            dis.append(i[j])
+
     ax[0].plot(g_a.iteration_list, g_a.total_fitness_list)
-    ax[1].scatter(g_a.iteration_list, g_a.dispersion)
+    ax[0].set_ylabel("Fitness de cada poblacion")
+    ax[0].set_xlabel("Iteraciones")
+    ax[1].scatter(it, dis)
+    ax[1].set_ylabel("Dispersion de cada individuo")
+    ax[1].set_xlabel("Iteraciones")
     plt.show()
     main_loop(path1)
  

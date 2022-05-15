@@ -4,6 +4,7 @@ from layout import Layout
 import matplotlib.pyplot as plt
 import pandas as pd
 import re
+import time
 
 if __name__ == "__main__":
 
@@ -90,18 +91,25 @@ if __name__ == "__main__":
     states = []
     T= []
     #state, cost = S_Ann.sequence()
+    t_inicial = time.time()
     for i in range(100):
-        cost, state = S_Ann.sequence()
-        states.append(state)
-        costs.append(cost)
+        cost = 0
+        for j in range(10):
+            cost= cost + S_Ann.sequence()[0]
+        costs.append(cost/10)
         T.append(i)
+
+    t_final = time.time()
+    t = t_final-t_inicial
+
+    print("Tiempo de ejecucion ", t)
     #print("Mejor estado corto] %s"%state)
     #print("Costo: %s"%costs)
 
     
     fig, ax= plt.subplots()
-    ax.plot(T, costs)
+    ax.scatter(T, costs)
     ax.set_xlabel("Iteracion")
     ax.set_ylabel("Costo de la orden")
-    ax.set_title('Simulated annealing con log base 1000000 Desde Y = 5000')
+    #ax.set_title('Simulated annealing con log base 1000000 Desde Y = 5000')
     plt.show()

@@ -1,27 +1,33 @@
 
 import random
 import math
-
+import time
 import numpy
 
 
 class Simulated_Annealing:
 
     def __init__(self, nodes, list_layout, df):
-        self.t=True
+
         self.dict_cost={}
         self.nodes = nodes[:]
         self.nodes.append(0)
         self.nodes.insert(0, 0)
         self.list_layout = list_layout[:]
         self.df = df
+        self.costs_list = []
 
 
     def cost(self,state):
+        
         cost = 0
         for i in range(1, len(state)-1):
             cost = cost + self.dict_cost["%s->%s"%(state[i],state[i+1])]
+        
         return cost
+    
+    def log30(self, t):
+        return math.log(t, 30)
 
     def fill_dicts(self):
 
@@ -40,55 +46,47 @@ class Simulated_Annealing:
                         id = '%s->%s'%(self.list_layout.index(i), self.list_layout.index(j))
                     self.dict_cost["%s->%s"%(self.nodes[i], self.nodes[j])] = self.df.loc["%s->%s"%(self.nodes[i], self.nodes[j]),"costo"]
 
-
-    def sequence(self):
+    def sequence(self, alpha, t):
         
         """
         Ejecuta el algoritmo de recocido simulado y devuelve una lista con el mejor orden que encontro, 
         el costo de dicho orden y ademas una lista de las T y una de los costos de cada orden que ha ido
         encontrando para graficarlos 
         """   
-        X = 0 
-        if 0<len(self.nodes)<=10:
-            Y = 1000
+
+        """if 0<len(self.nodes)<=10:
+            t = t - 1000
         elif 10<len(self.nodes)<=20:
-            Y = 100
+            t = t
         elif 20<len(self.nodes)<=30:
-            Y = 100
+            t = t + 500
         else:
-<<<<<<< HEAD
-            Y = 3000
-
-=======
-            T=1000
+            t = t + 1000
         """
-        T = 10
-        Y = 1000
->>>>>>> 47632ea7abea1e668df44e72c6369b03403a5cb0
-
         new = self.nodes[:] #Nuevo estado depues de permutar sus nodos
         b_state = self.nodes[:] #Mejor estado econtrado
         c_state = self.nodes[:] #Estado actual con el que trabaja el algoritmo
         
-        best_cost=self.cost(b_state)
+        best_cost = 0
 
-        while self.t==True :
-            
-<<<<<<< HEAD
-            Y = Y -1
-            T = (math.log(Y, 100))
-            #Y = Y - 1
-            #T = 10*math.exp(-X/50)
-=======
-            T = math.log(Y, 20)
-            #T =Y**(3)
-            Y = Y - 1
-            #temperature_list.append(T)
-            #print(T)
->>>>>>> 47632ea7abea1e668df44e72c6369b03403a5cb0
-            
+        #Listas para graficar
+        cost_list = []
+        temperature_list = []
+        iteration_list = []
+        
+        
+
+        while True:
+
+            T = alpha(t)
+
+            t = t - 1
+
             if T<0.00001:
-                return (best_cost, b_state) 
+                return (best_cost, b_state, cost_list, temperature_list, list(reversed(iteration_list))) 
+
+            temperature_list.append(T)
+            iteration_list.append(t)
 
             pos1=random.randrange(1,(len(c_state)-1),1) 
             pos2=pos1
@@ -106,12 +104,13 @@ class Simulated_Annealing:
                 c_state=new[:]
                 cost1=cost2
                 
-            if cost1<best_cost :
+            if cost1<best_cost or best_cost == 0:
                 b_state=c_state[:]
                 best_cost=cost1
-
+            
+            cost_list.append(cost1)
             new = c_state[:]
-            #state_list.append(cost1)
+
 
                 
 

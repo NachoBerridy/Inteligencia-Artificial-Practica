@@ -17,7 +17,10 @@ if __name__ == "__main__":
     layout1.fill_mat(o_layout)
     path1 = Path(layout1)
 
-    fig, ax = plt.subplots(1,2)
+   
+    fig1, ax1 = plt.subplots()
+    fig2, ax2= plt.subplots()
+    fig3, ax3 = plt.subplots()
 
     it = [] 
     dis = []
@@ -30,12 +33,23 @@ if __name__ == "__main__":
         for j in range(len(i)):
             dis.append(i[j])
 
-    ax[0].plot(g_a.iteration_list, g_a.total_fitness_list)
-    ax[0].set_ylabel("Fitness de cada poblacion")
-    ax[0].set_xlabel("Iteraciones")
-    ax[1].scatter(it, dis)
-    ax[1].set_ylabel("Dispersion de cada individuo")
-    ax[1].set_xlabel("Iteraciones")
+    ax1.plot(g_a.iteration_list, g_a.total_fitness_list, marker = 'o')
+
+    ax1.set_ylabel("Fitness de cada poblacion")
+    ax1.set_xlabel("Iteraciones")
+
+    ax2.boxplot(g_a.dispersion)
+    ax2.set_ylabel("Dispersion de cada individuo")
+    ax2.set_xlabel("Iteraciones")
+    ax2.set_xticklabels(g_a.iteration_list)
+    fitness_a=[]
+    for i in g_a.total_fitness_list:
+        fitness_a.append(i/g_a.numero_poblacion)
+    
+    ax3.plot(g_a.iteration_list, fitness_a)
+    ax3.set_ylabel("Fitness promedio de cada poblacion")
+    ax3.set_xlabel("Iteraciones")
+    
     plt.show()
     main_loop(path1)
  

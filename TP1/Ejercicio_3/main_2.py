@@ -1,3 +1,4 @@
+from cProfile import label
 from Simulated_Annealing_df import Simulated_Annealing
 from path import Path
 from layout import Layout
@@ -5,6 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import re
 import time
+import math
 
 if __name__ == "__main__":
 
@@ -51,6 +53,7 @@ if __name__ == "__main__":
         return orders
 
     def crate_df():
+
         layout1 = Layout()
         layout1.fill_mat()
         path_1 = Path(layout1)
@@ -87,29 +90,131 @@ if __name__ == "__main__":
 
     S_Ann = Simulated_Annealing(orders[5], list, df)
     S_Ann.fill_dicts()
-    costs = []
-    states = []
-    T= []
-    #state, cost = S_Ann.sequence()
-    t_inicial = time.time()
-    for i in range(100):
-        cost = 0
-        for j in range(10):
-            cost= cost + S_Ann.sequence()[0]
-        costs.append(cost/10)
-        T.append(i)
 
-    t_final = time.time()
-    t = t_final-t_inicial
-
-    print("Tiempo de ejecucion ", t)
-    #print("Mejor estado corto] %s"%state)
-    #print("Costo: %s"%costs)
 
     
-    fig, ax= plt.subplots()
-    ax.scatter(T, costs)
-    ax.set_xlabel("Iteracion")
+    costs_list = []
+    iterations = []
+    T= []
+    times = []
+
+
+    def log50(t):
+        return math.log(t, 50)
+
+    def log30(t):
+        return math.log(t, 30)
+    
+    def log20(t):
+        return math.log(t, 20)
+    
+    def log10(t):
+        return math.log(t, 10)
+
+    def log5(t):
+        return math.log(t, 5)
+
+    def lineal(t):
+        return t
+    
+    def quadratic(t):
+        return t**2
+
+    def cubic(t):
+        return t**3
+    
+
+    functions = [log50, log30, log20] #, log10, log5, lineal, quadratic, cubic]
+    functions_names = ["log50", "log30", "log20"] #, "log10", "log5"], "lineal", "quadratic", "cubic"]
+    
+    it, ax = plt.subplots()
+
+    counter = 0
+
+    #data = pd.DataFrame()
+
+    for i in functions:
+        a, b, c, d, e = S_Ann.sequence(i, 10000)
+        costs_list.append(c[:])
+        iterations.append(e[:])
+        
+        #data[functions_names[counter]] = c[:]
+
+        ax.plot(iterations[counter], costs_list[counter], label = functions_names[counter])
+        counter = counter +1
+
+
+    ax.set_title("Distintas funciones de enfriamiento")
+    ax.set_xlabel("Numero de iteraciones")
+    ax.set_ylabel("Costos")
+    ax.legend()
+
+    """
+    costs = []
+    T = []
+    costs_list = []
+    counter = 0
+    for j in functions:
+
+        t_inicial = time.time()
+        costs = []
+
+        for i in range(100):
+            costs.append(S_Ann.sequence(j, 5000)[0])
+        
+        
+        t_final = time.time()
+
+        times.append(t_final-t_inicial)
+        costs_list.append(costs)
+        T.append(functions_names[counter])  
+
+        counter = counter +1
+    print(T)
+    boxes, ax = plt.subplots()
+    ax.boxplot(costs_list)
+    ax.set_xticklabels(T)
+    ax.set_xlabel("Funcion")
     ax.set_ylabel("Costo de la orden")
-    #ax.set_title('Simulated annealing con log base 1000000 Desde Y = 5000')
+    ax.set_title("Dispersion respecto del  la funcion")
+    plt.show()
+
+    tiempos, axx = plt.subplots()
+    axx.plot(T, times, marker = 'o')
+    axx.set_xlabel("Funcion")
+    axx.set_xticklabels(T)
+    axx.set_ylabel("Tiempo de ejecucion")
+    axx.set_title("Tiempo respecto de la funcion")
+    plt.show()
+    """
+
+    t = [100, 200, 500, 1000, 5000, 10000, 20000, 40000]
+    for j in t:
+        costs = []
+
+        t_inicial = time.time()
+        for i in range(100):
+
+            costs.append(S_Ann.sequence(log20, j)[0])
+        
+        t_final = time.time()
+        times.append(t_final-t_inicial)
+        costs_list.append(costs)
+        T.append(str(j))
+        print("Tiempo con t = %s: %s"%(j, t_final-t_inicial))
+    
+
+    boxes, ax = plt.subplots()
+    ax.boxplot(costs_list)
+    ax.set_xticklabels(T)
+    ax.set_xlabel("Numero de iteraciones")
+    ax.set_ylabel("Costo de la orden")
+    ax.set_title("Dispersion respecto del numero de iteraciones")
+    plt.show()
+
+    tiempos, axx = plt.subplots()
+    axx.plot(T, times, marker = 'o')
+    axx.set_xlabel("Numero de iteraciones")
+    axx.set_ylabel("Tiempo de ejecucion")
+    axx.set_title("Tiempo respecto del numero de iteraciones")
     plt.show()

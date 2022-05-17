@@ -5,6 +5,7 @@ import pandas as pd
 from path import *
 from Simulated_Annealing_df import Simulated_Annealing
 import time
+import math
 
 class Genetic_Algorithm:
 
@@ -28,7 +29,7 @@ class Genetic_Algorithm:
 
     def read_txt(self):
 
-        orders=open("Ejercicio_3\orders.txt","r")
+        orders=open(".\orders.txt","r")
         a = 1
         list_1 = []
         list_2 = []
@@ -164,23 +165,22 @@ class Genetic_Algorithm:
         #print("Tiempo de ejecucion de mutation:" ,(fin-inicio))
         return child
 
+
     def fitness(self, list_layout, df): #lista layout es uno de los individuos de la poblacion, osea una configuracion del layout
-        #inicio = time.time()
+       
+        def log30(t):
+            return math.log(t, 30)
+    
         fitness = 0
-        #print(self.orders)
         for i in self.orders:
-            #print(self.orders.index(i))
             s = Simulated_Annealing(i,list_layout, df)
             s.fill_dicts()
-            fitness = fitness + s.sequence()[0]
+            fitness = fitness + s.sequence(log30, 10000)[0]
             del s 
-        #fin = time.time()
-        #print("Tiempo de ejecucion de fitness:" ,(fin-inicio))
         return 100/fitness
 
 
     def selec_parents(self, p):
-        #inicio = time.time()
         i = random.random()
         j = 0
         l = 0
@@ -190,8 +190,6 @@ class Genetic_Algorithm:
                     self.father1 = self.population[l][:]
                 elif p==2:
                     self.father2 = self.population[l][:]
-                #fin = time.time()
-                #print("Tiempo de ejecucion de select parents%s: %s"%(p,fin-inicio))
                 return (l)
             j = j+k
             l = l + 1  
@@ -242,6 +240,7 @@ class Genetic_Algorithm:
                     self.best_fitness = self.real_fitness_list[i]
 
             self.dispersion.append(self.real_fitness_list[:])
+
             #lista de fitness total 
             self.total_fitness_list.append(real_fitness)
 
@@ -262,7 +261,6 @@ class Genetic_Algorithm:
                 children_list.append(self.population[0][:])
             
             #Desviación estandar relativa a la media 
-
             if iteration>5:
                 st_dev=np.std(self.real_fitness_list[:])/np.average(self.real_fitness_list[:])
                 st_dev2=np.std(self.total_fitness_list[-5:])/np.average(self.total_fitness_list[-5:])

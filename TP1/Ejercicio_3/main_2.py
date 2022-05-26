@@ -188,7 +188,7 @@ if __name__ == "__main__":
     plt.show()
     """
 
-    t = [100, 200, 500, 1000, 5000, 10000, 20000, 40000]
+    t = [10, 20, 50, 100, 15, 25, 200, 40]
     for j in t:
         costs = []
 
@@ -206,7 +206,7 @@ if __name__ == "__main__":
 
     boxes, ax = plt.subplots()
     ax.boxplot(costs_list)
-    ax.set_xticklabels(T)
+    #ax.set_xticklabels(T)
     ax.set_xlabel("Numero de iteraciones")
     ax.set_ylabel("Costo de la orden")
     ax.set_title("Dispersion respecto del numero de iteraciones")
@@ -215,6 +215,6 @@ if __name__ == "__main__":
     tiempos, axx = plt.subplots()
     axx.plot(T, times, marker = 'o')
     axx.set_xlabel("Numero de iteraciones")
-    axx.set_ylabel("Tiempo de ejecucion")
+    axx.set_ylabel("Tiempo de ejecucion [s]")
     axx.set_title("Tiempo respecto del numero de iteraciones")
     plt.show()

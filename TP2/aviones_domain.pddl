@@ -4,7 +4,7 @@
 	(en ?a ?b) 
 	(avion ?a)
 	(carga ?c)
-	(aeropuerto ?a)
+	(aeropuerto ?ap)
 ) 
 (:action cargar
  :parameters ( ?c ?a ?ap)

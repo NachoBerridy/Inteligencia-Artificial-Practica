@@ -81,13 +81,13 @@
         (operacion taladrado)
         (operacion torneado)
 
-
-
-
-
+        (herramienta fresadora)
+        (herramienta taladro)
+        (herramienta torno)
 
         
         (orientacion-pieza orientacion_x_menos)
+        (lado-pieza izquierda)
 
         (herramienta-actual fresadora)
         (herramienta-altura arriba)
@@ -154,23 +154,27 @@
 
 
         (fabricable slotA fresado)
-        (fabricable slotA fresado)
-        (fabricable slotA fresado)
+        (fabricable slotB fresado)
+        (fabricable slotC fresado)
 
         (fabricable through-hole taladrado)
         (fabricable blind-hole taladrado)
 
-        (herramienta-necesaria taladro taladrado)
-        (herramienta-necesaria torno torneado)
-        (herramienta-necesaria fresadora fresado)
+        (herramienta-necesaria taladrado taladro)
+        (herramienta-necesaria torneado torno)
+        (herramienta-necesaria fresado fresadora)
     )
     (:goal 
         (and
             (fabricada f2)
+            (fabricada f3)
             (fabricada f4)
             (fabricada f6)
+            (fabricada f7)
+            (fabricada f8)
             (fabricada f9)
             (fabricada f10)
+            
         )
     )
 )

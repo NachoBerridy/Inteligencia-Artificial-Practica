@@ -18,38 +18,62 @@ CONSTANTE_l = 1 # Longitud de la pertiga
 controlador = Controller()
 
 def simular(t_max, delta_t, theta_0, v_0, a_0):
-  theta = (theta_0 * np.pi) / 180
-  v = v_0
-  a = a_0
+	theta = (theta_0 * np.pi) / 180
+	v = v_0
+	a = a_0
 
-  # Simular
-  y = []
-  y_v = []
-  x = np.arange(0, t_max, delta_t)
-  for t in x:
+	# Simular
+	y = []
+	y_v = []
+	f_v = []
+	x = np.arange(0, t_max, delta_t)
+	for t in x:
 
-    fuzzy_ang = controlador.fuzzifier_ang(theta)
-    fuzzy_vel = controlador.fuzzifier_vel(v)
-    inference = controlador.fuzzy_inference(fuzzy_ang, fuzzy_vel)
+		fuzzy_ang = controlador.fuzzifier_ang(theta)
+		fuzzy_vel = controlador.fuzzifier_vel(v)
+		inference = controlador.fuzzy_inference(fuzzy_ang, fuzzy_vel)
 
-    f = controlador.desfuzzifier(inference, 100, 1000)
-    a = calcula_aceleracion(theta, v, f)
-    v = v + a * delta_t
-    theta = theta + v * delta_t + a * np.power(delta_t, 2) / 2
-    y.append(theta*(180/np.pi))
-    y_v.append(v)
-    
-  fig, ax = plt.subplots(1, 2)
-  ax[0].plot(x, y)
+		f = controlador.desfuzzifier(inference, 10, 80)
+		f_v.append(f)
+		a = calcula_aceleracion(theta, v, f)
+		v = v + a * delta_t
+		theta = theta + v * delta_t + a * np.power(delta_t, 2) / 2
+		
+		if abs(theta*(180/np.pi)) >= 90:
+			print('Fuerza insuficiente - Se cayo')
+			break
 
-  ax[0].set(xlabel='time (s)', ylabel='theta', title='Delta t = ' + str(delta_t) + " s")
-  ax[0].grid()
+		y.append(theta*(180/np.pi))
+		y_v.append(v)
+	
 
-  ax[1].plot(x, y_v)
-  ax[1].set(xlabel='time (s)', ylabel='Vel', title='Delta t = ' + str(delta_t) + " s")
-  ax[1].grid()
 
-  plt.show()
+	fig, ax = plt.subplots(1, 2)
+	figf, axf = plt.subplots()
+	try:
+		ax[0].plot(x[0:len(y)], y)
+
+		ax[0].set(xlabel='time (s)', ylabel='theta', title='Delta t = ' + str(delta_t) + " s")
+		ax[0].grid()
+
+	except:
+		pass
+
+	try:
+
+		ax[1].plot(x[0:len(y_v)], y_v)
+		ax[1].set(xlabel='time (s)', ylabel='Vel', title='Delta t = ' + str(delta_t) + " s")
+		ax[1].grid()
+	except:
+		pass
+
+	try:
+		axf.plot(x[0:len(f_v)], f_v)
+		axf.set(xlabel = 'time (s)', ylabel = 'Fuerza (N)', title='Delta t = ' + str(delta_t) + " s")
+	except:
+		pass
+	
+	plt.show()
 
 
 # Calcula la aceleracion en el siguiente instante de tiempo dado el angulo y la velocidad angular actual, y la fuerza ejercida
@@ -68,4 +92,4 @@ simular(10, 0.01, 45, 0, 0)
 
 simular(10, 0.001, 45, 0, 0)"""
 
-simular(30, 0.0001, 45, 1, 0)
+simular(30, 0.0001, 45, 5, 0)

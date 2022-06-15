@@ -67,47 +67,47 @@ class Controller:
     def fuzzifier_vel (self, vel):
         fuzzy = {}
         
-        if - 100 <= vel <=-20 :
+        if - 10 <= vel <=-2 :
             uv=1
             vel_f="NG"
             fuzzy[vel_f] = uv
-        elif -20 < vel <= -10:
-            uv=(-1/10)*vel - 1
+        elif -2 < vel <= -1:
+            uv=(-1)*vel - (1)
             vel_f = "NG"
             fuzzy[vel_f] = uv
 
-        if - 20 <= vel <=-10 :
-            uv=(1/10)*vel + 2
+        if - 2 <= vel <=-1 :
+            uv=(1)*vel + 2
             vel_f = "NP"
             fuzzy[vel_f] = uv
-        elif -10 < vel <= 0:
-            uv=(-1/10)*vel
+        elif -1 < vel <= 0:
+            uv=(-1)*vel
             vel_f = "NP"
             fuzzy[vel_f] = uv
         
-        if -10 <= vel <= 0:
-            uv=(1/10)*vel + 1
+        if -1 <= vel <= 0:
+            uv=(1)*vel + 1
             vel_f = "Z"
             fuzzy[vel_f] = uv
-        elif 0 < vel <= 10:
-            uv=(-1/10)*vel + 1
+        elif 0 < vel <= 1:
+            uv=(-1)*vel + 1
             vel_f = "Z"
             fuzzy[vel_f] = uv
         
-        if 0 <= vel <= 10 :
-            uv=(1/10)*vel
+        if 0 <= vel <= 1 :
+            uv=(1)*vel
             vel_f = "PP" 
             fuzzy[vel_f] = uv
-        elif 10 < vel <= 20:
-            uv=(-1/10)*vel + 2 
+        elif 1 < vel <= 2:
+            uv=(-1)*vel + 2 
             vel_f = "PP"
             fuzzy[vel_f] = uv
         
-        if 10 <= vel <=20 :
-            uv=(1/10)*vel - 1
+        if 1 <= vel <=2 :
+            uv=(1)*vel - 1
             vel_f = "PG"
             fuzzy[vel_f] = uv
-        elif 20 < vel <= 100:
+        elif 2 < vel <= 10:
             uv=1
             vel_f = "PG"
             fuzzy[vel_f] = uv
@@ -212,4 +212,8 @@ class Controller:
         except:
             return 0
                     
+
+        
+        
+
 

@@ -135,7 +135,7 @@ verificar(gas_leakage_at_joint):-
 estado(safety_valve_body_pipe_and_joints_having_dazzling_rusting, desconocido).
 estado(thickness_less_than_threshold_limit, desconocido).
 
-estado(safety_valve_has_continuous_evacuation, yes).
+estado(safety_valve_has_continuous_evacuation, desconocido).
 
 estado(relief_valve_ok_with_10_percent_more_pressure, desconocido).
 estado(valve_status_closed, desconocido).

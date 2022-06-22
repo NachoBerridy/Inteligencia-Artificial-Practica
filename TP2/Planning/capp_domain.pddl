@@ -24,7 +24,7 @@
     (feature-tipo ?f ?feat-tipo)
 
     (fabricable ?t ?oper)
-    (herramienta-necesaria ?h ?oper)
+    (herramienta-necesaria ?oper ?h)
 
     (fabricada ?feat)
 
@@ -91,24 +91,36 @@
 )
 
 (:action maquinado
- :parameters ( ?o ?f ?t ?oper ?h ?al)
+ :parameters (?f ?o ?t ?oper ?h ?al)
  :precondition
 	(and 
-        (operacion ?oper)
-        (orientacion ?o) 
-        (herramienta ?h)
         (feature ?f)
+
+        (herramienta ?h)
+
         (tipo ?t)
 
+        (operacion ?oper)
+
+        (orientacion ?o) 
+
+        (altura ?al)
+
         (herramienta-actual ?h)
-        (herramienta-altura ?al)
+        (herramienta-necesaria ?oper ?h)
+        
         (orientacion-pieza ?o)
-        (feature-tipo ?f ?t)
-        (fabricable ?t ?oper)
-        (herramienta-necesaria ?h ?oper)
         (orientacion-feature ?f ?o)
+        
+        
+        (feature-tipo ?f ?t)
+        
+        (fabricable ?t ?oper)
+
+        (herramienta-altura ?al)
         (altura-feature ?f ?al)
         
+
     )
  :effect
     (fabricada ?f)

@@ -295,10 +295,10 @@ class MLP:
             
             plt.legend()
             plt.show()
-        print ("Precision = ",precision[-1])
-        print ()
-        print ()
-        return (pesos)
+        #print ("Precision = ",precision[-1])
+        #print ()
+        #print ()
+        return (pesos, precision[-1])
 
     def accuracy(self, t, max_scores, cantidad_clases):
         t = list(t)
@@ -353,7 +353,8 @@ class MLP:
             x = ((x - np.minimum(0,x))/(np.maximum(0,x)- np.minimum(0,x)))
             t = ((t - np.minimum(0,t))/(np.maximum(0,t)- np.minimum(0,t)))
         print(x)"""
-        self.pesos = self.train(x, t, self.pesos, LEARNING_RATE, EPOCHS, x_validacion, t_validacion,graficar,f)
+        self.pesos, pres = self.train(x, t, self.pesos, LEARNING_RATE, EPOCHS, x_validacion, t_validacion,graficar,f)
+        return pres
 
 
     def iniciar2(self, numero_clases, numero_ejemplos, graficar_datos,learning_rate,graficar,f):

@@ -33,7 +33,7 @@ def simular(t_max, delta_t, theta_0, v_0, a_0):
 		fuzzy_vel = controlador.fuzzifier_vel(v)
 		inference = controlador.fuzzy_inference(fuzzy_ang, fuzzy_vel)
 
-		f = controlador.desfuzzifier(inference, 10, 80)
+		f = controlador.desfuzzifier(inference, 100, 800)
 		f_v.append(f)
 		a = calcula_aceleracion(theta, v, f)
 		v = v + a * delta_t

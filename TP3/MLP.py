@@ -201,6 +201,7 @@ class MLP:
         loss_train = []
         loss_validacion = []
         
+        dloss_val_list = []
         for i in range(epochs):
             # Ejecucion de la red hacia adelante
             resultados_feed_forward = self.ejecutar_adelante(x, pesos,funcion=f)
@@ -272,14 +273,22 @@ class MLP:
                 #Cretetio de parada mediante derivadas
 
                 if len(precision)>2:
+                    
                     d_loss_validation = (3*loss_validacion[-1]-4*loss_validacion[-2]+loss_validacion[-3])/(2*200)
+                    dloss_val_list.append(d_loss_validation)
                     d_loss_train = (3*loss_train[-1]-4*loss_train[-2]+loss_train[-3])/(2*200)
                     d_f1 = (3*f1[-1]-4*f1[-2]+f1[-3])/(2*200)
                     d_precision = (3*precision[-1]-4*precision[-2]+precision[-3])/(2*200)
                     d_recall = (3*recall[-1]-4*recall[-2]+recall[-3])/(2*200)
-                    if np.sign(d_loss_train) != np.sign(d_loss_validation) and np.sign(d_f1) == -1:
+                    
+                    if len(dloss_val_list)>5:
+                        if (np.sign(dloss_val_list[-1]) == 1 and 
+                            np.sign(dloss_val_list[-2]) == 1 and
+                            np.sign(dloss_val_list[-3]) == 1 and
+                            
+                            np.sign(d_f1) == -1):
 
-                        break
+                            break
        
         if graficar == True:
             fig, ax = plt.subplots(1, 2)
@@ -353,7 +362,10 @@ class MLP:
             x = ((x - np.minimum(0,x))/(np.maximum(0,x)- np.minimum(0,x)))
             t = ((t - np.minimum(0,t))/(np.maximum(0,t)- np.minimum(0,t)))
         print(x)"""
-        self.pesos, pres = self.train(x, t, self.pesos, LEARNING_RATE, EPOCHS, x_validacion, t_validacion,graficar,f)
+        self.pesos, pres = self.train(x, t, self.pesos, LEARNING_RATE, EPOCHS, x_validacion, t_validacion,graficar, f)
+
+        
+
         return pres
 
 
@@ -378,4 +390,40 @@ class MLP:
             x = ((x - np.minimum(0,x))/(np.maximum(0,x)- np.minimum(0,x)))
             t = ((t - np.minimum(0,t))/(np.maximum(0,t)- np.minimum(0,t)))
         self.pesos = self.train(x, t, self.pesos, LEARNING_RATE, EPOCHS, x_validacion, t_validacion,graficar,f)
+
+
+    def iniciar3(self, numero_clases, numero_ejemplos, graficar_datos,learning_rate,graficar,f,x,t,x_validacion, t_validacion):
+
+            # Graficamos los datos si es necesario
+            if graficar_datos:
+                # Parametro: "c": color (un color distinto para cada clase en t)
+                fig, ax = plt.subplots(1, 2)
+                ax[0].scatter(x[:, 0], x[:, 1], c=t)
+                ax[1].scatter(x_validacion[:, 0], x_validacion[:, 1], c=t_validacion)
+                plt.show()
+
+            # Entrena
+            LEARNING_RATE = learning_rate
+            EPOCHS=30000
+
+            self.pesos, pres = self.train(x, t, self.pesos, LEARNING_RATE, EPOCHS, x_validacion, t_validacion,graficar,f)
+            return pres
+     
+    def test_method(self):
         
+        x_test, t_test = self.generar_datos_clasificacion(cantidad_ejemplos=300, cantidad_clases=3)
+        max_score = self.clasificar(x_test, self.pesos)
+        precision, recall, f1 = self.accuracy(t_test, max_score, self.numero_clases)
+        
+     
+
+        clases = np.linspace(0, self.numero_clases-1, self.numero_clases)
+        fig2, ax2 = plt.subplots(1, 3)
+        
+        ax2[0].bar(clases, precision)
+        ax2[0].set(title = 'Precision vs Clase', ylabel = 'Precision', xlabel = 'Clase')
+        ax2[1].bar(clases ,recall)
+        ax2[1].set(title = 'Recall vs Clase', ylabel = 'Recall', xlabel = 'Clase')
+        ax2[2].bar(clases, f1)
+        ax2[2].set(title = 'F1 vs Clase', ylabel = 'F1', xlabel = 'Clase')
+        plt.show()

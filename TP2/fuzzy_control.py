@@ -177,7 +177,7 @@ class Controller:
         
         return force
 
-    def desfuzzifier (self, force, p, g): #medio
+    def desfuzzifier (self, force, p, g): #media de centros
 
         numerador = 0
         denominador = 0

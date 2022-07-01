@@ -14,7 +14,7 @@ class Regresion:
         self.pesos = self.inicializar_pesos()
         self.train = self.generar_datos(m, funcion, 5000)
         self.test = self.generar_datos(m, funcion, 5000)
-        self.validation = self.generar_datos(m, funcion, 10)
+        self.validation = self.generar_datos(m, funcion, 5000)
         self.m  = m
         self.fun = funcion
 
@@ -158,6 +158,17 @@ class Regresion:
         ax2.legend()
         plt.show()
         return(0)
+
+    def test_method(self):
+        x = self.test[0]
+        t = self.test[1]
+        y  = self.ejecutar_adelante(x)[2]
+        fig, ax = plt.subplots()
+        ax.plot(x, y, c = 'red')
+        ax.scatter(x, t)
+        ax.set(title = 'Regresion conjunto de test', xlabel = 'x', ylabel = 'y')
+        plt.show()
+    
 
 
 

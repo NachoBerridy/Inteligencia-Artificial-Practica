@@ -1,7 +1,7 @@
 from MLP import MLP
 import matplotlib.pyplot as plt
 import numpy as np
-modificar = 1
+modificar = 5
 #funcion = 1 #reLU
 #funcion = 2 #sigmoide
 if modificar == 0: #no modifica el programa
@@ -96,10 +96,11 @@ elif modificar == 4: #funcion sigmoide
 elif modificar == 5: #barrido del learning_rate y neuronas de la capa oculta
     
     funcion = 1 #reLU
-    learning = np.linspace(0.5,2,31)
-    neuronas=np.linspace(50,200,31)
+    learning = np.linspace(0.1,1,5)
+    neuronas=np.linspace(100,200,5)
     precision = []
     for i in learning:
+        print(i)
         p = []
         for j in neuronas:
             mlp = MLP(neuronas_ocultas = int(i))
@@ -117,6 +118,7 @@ elif modificar == 5: #barrido del learning_rate y neuronas de la capa oculta
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     ax.plot_surface(x, y, z, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
+    ax.set_title('Precision vs learning_rate vs neuronas')	
     ax.set_xlabel('learning_rate')
     ax.set_ylabel('neuronas')
     ax.set_zlabel('precision')

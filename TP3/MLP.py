@@ -213,8 +213,8 @@ class MLP:
             loss, p = self.loss(y,m,t)
 
             # Mostramos solo cada 1000 epochs
-            if i %1000 == 0:
-                print("Loss epoch", i, ":", loss)
+            """if i %1000 == 0:
+                print("Loss epoch", i, ":", loss)"""
 
             # Extraemos los pesos a variables locales
             w1 = pesos["w1"]
